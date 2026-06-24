@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes, viewport-fit=cover" />
     <title>scrolltxt · карточный фид</title>
     <style>
         /* ─── RESET & BASE ─── */
@@ -120,7 +120,7 @@
             overflow: hidden;
         }
 
-        /* Плавный переход темы */
+        /* Плавный переход темы для всех ключевых элементов */
         .header,
         .footer,
         .card-item,
@@ -617,7 +617,7 @@
             background: var(--bg-body);
             transition: background 0.4s ease;
             min-height: 0;
-            touch-action: pan-y; /* разрешаем вертикальный скролл внутри карточек */
+            touch-action: pan-y;
         }
 
         .card-stack {
@@ -627,6 +627,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .card-item {
@@ -650,9 +651,11 @@
             pointer-events: none;
             user-select: none;
             overflow-y: auto;
+            overflow-x: hidden;
             max-height: 80vh;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
+            contain: layout style paint;
         }
 
         .card-item.active {
@@ -669,6 +672,7 @@
             cursor: pointer;
             z-index: 5;
             transform: translate(-50%, -50%) translateY(-20vh) scale(0.92);
+            content-visibility: auto;
         }
         .card-item.below {
             transform: translate(-50%, -50%) translateY(20vh) scale(0.92);
@@ -679,11 +683,13 @@
             pointer-events: none;
             z-index: 1;
             transform: translate(-50%, -50%) translateY(-40vh) scale(0.85);
+            content-visibility: auto;
         }
         .card-item.hidden-below {
             transform: translate(-50%, -50%) translateY(40vh) scale(0.85);
         }
 
+        /* Внутреннее содержимое */
         .card-item .card-top {
             display: flex;
             flex-wrap: wrap;
@@ -735,6 +741,7 @@
             font-family: 'Georgia', 'Times New Roman', serif;
             max-height: 28vh;
             overflow-y: auto;
+            overflow-x: hidden;
             padding-right: 0.25rem;
         }
         .card-item .card-content::-webkit-scrollbar {
@@ -1024,7 +1031,6 @@
                 height: 1rem;
             }
 
-            /* Фиксированный футер */
             .app {
                 padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
             }
@@ -1216,9 +1222,7 @@
 
         <!-- ═══ READER / CARD STACK ═══ -->
         <div class="reader-container" id="readerContainer">
-            <div class="card-stack" id="cardStack">
-                <!-- cards rendered here -->
-            </div>
+            <div class="card-stack" id="cardStack"></div>
         </div>
 
         <!-- ═══ FOOTER ═══ -->
@@ -1628,25 +1632,19 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  TOUCH (мобильные: вертикальный свайп вне карточки)
+        //  TOUCH (mobile: swipe only outside any card)
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         let touchStartX = 0, touchStartY = 0;
-        let swipeEnabled = false; // true, если свайп может начаться (тач не на активной карточке и не на кнопках)
+        let swipeEnabled = false;
 
         document.body.addEventListener('touchstart', (e) => {
             if (isAnimating || !isMobileDevice) return;
             const target = e.target;
-            // Игнорируем, если тач начался на интерактивных элементах (кнопки, ссылки, инпуты, селекты)
-            if (target.closest('button, a, input, select, label')) {
+            // Игнорируем интерактивные элементы и любые карточки
+            if (target.closest('button, a, input, select, label, .card-item')) {
                 swipeEnabled = false;
                 return;
             }
-            // Игнорируем, если тач внутри активной карточки (чтобы работал скролл текста)
-            if (target.closest('.card-item.active')) {
-                swipeEnabled = false;
-                return;
-            }
-            // В остальных случаях (хедер, футер, пустое пространство) разрешаем свайп
             swipeEnabled = true;
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
@@ -1656,9 +1654,7 @@
             if (!swipeEnabled || isAnimating) return;
             const deltaX = e.touches[0].clientX - touchStartX;
             const deltaY = e.touches[0].clientY - touchStartY;
-            // Если горизонтальное смещение больше вертикального, не мешаем (возможно, горизонтальный скролл)
             if (Math.abs(deltaX) > Math.abs(deltaY)) return;
-            // Предотвращаем скролл страницы (вертикальный) при свайпе
             if (Math.abs(deltaY) > 10) {
                 e.preventDefault();
             }
@@ -1669,12 +1665,11 @@
             const deltaX = e.changedTouches[0].clientX - touchStartX;
             const deltaY = e.changedTouches[0].clientY - touchStartY;
             const threshold = 40;
-            // Учитываем только вертикальный свайп с преобладанием по вертикали
             if (Math.abs(deltaY) > threshold && Math.abs(deltaY) > Math.abs(deltaX)) {
                 if (deltaY < 0) {
-                    goToNext(); // свайп вверх → следующая
+                    goToNext(); // свайп вверх
                 } else {
-                    goToPrev(); // свайп вниз → предыдущая
+                    goToPrev(); // свайп вниз
                 }
             }
             swipeEnabled = false;
