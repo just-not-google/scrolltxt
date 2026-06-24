@@ -998,6 +998,11 @@
                 height: 1rem;
             }
 
+            /* ⚡️ ОТКЛЮЧАЕМ АНИМАЦИИ ПЕРЕЛИСТЫВАНИЯ ДЛЯ МОБИЛЬНЫХ */
+            .card-item {
+                transition: none !important;  /* убираем все переходы, включая transform/opacity */
+            }
+
             .card-item {
                 width: 90%;
                 padding: 1.2rem 1.2rem 1rem;
@@ -1262,7 +1267,8 @@
         let activeIndex = 0;
         let isAnimating = false;
         let showFavorites = false;
-        const TRANSITION_DURATION = isMobileDevice ? 400 : 600;
+        // ⚡️ На мобильных анимации нет, поэтому длительность блокировки минимальна
+        const TRANSITION_DURATION = isMobileDevice ? 0 : 600;
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         //  DOM REFS
@@ -1599,6 +1605,8 @@
             }
             renderCards();
 
+            // ⚡️ Для мобильных задержка 50 мс, чтобы избежать двойных свайпов
+            const unlockDelay = isMobileDevice ? 50 : TRANSITION_DURATION + 30;
             setTimeout(() => {
                 isAnimating = false;
                 if (pendingDirection !== 0) {
@@ -1606,7 +1614,7 @@
                     pendingDirection = 0;
                     performNavigation(dir);
                 }
-            }, TRANSITION_DURATION + 30);
+            }, unlockDelay);
         }
 
         function goToPrev() { performNavigation(-1); }
