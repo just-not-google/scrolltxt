@@ -120,7 +120,7 @@
             overflow: hidden;
         }
 
-        /* Плавный переход темы для всех ключевых элементов */
+        /* Плавный переход темы */
         .header,
         .footer,
         .card-item,
@@ -134,7 +134,10 @@
         .modal-overlay,
         .modal-box,
         .header-show-btn,
-        .scroll-top-btn {
+        .scroll-top-btn,
+        .card-item .card-category,
+        .card-item .card-id,
+        .card-item .favorite-btn {
             transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
@@ -251,10 +254,6 @@
             padding-right: 1.25rem;
             min-width: 3.5rem;
             transition: background-color 0.4s ease, color 0.4s ease;
-        }
-        .search-wrap select:focus,
-        .filters-group select:focus {
-            outline: none;
         }
 
         .dark-theme .search-wrap select,
@@ -663,7 +662,6 @@
             box-shadow: var(--shadow-card-hover);
         }
 
-        /* Десктоп */
         .card-item.above,
         .card-item.below {
             opacity: 0.25;
@@ -686,7 +684,6 @@
             transform: translate(-50%, -50%) translateY(40vh) scale(0.85);
         }
 
-        /* Внутреннее содержимое карточки */
         .card-item .card-top {
             display: flex;
             flex-wrap: wrap;
@@ -771,7 +768,6 @@
             margin-top: 0.15rem;
         }
 
-        /* Кнопка избранного */
         .card-item .favorite-btn {
             background: none;
             border: 1px solid var(--border-light);
@@ -913,7 +909,6 @@
 
         /* ─── МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ─── */
         @media (max-width: 40rem) {
-            /* Уменьшаем базовый размер шрифта, чтобы всё стало компактнее */
             html {
                 font-size: 14px;
             }
@@ -996,7 +991,6 @@
                 height: 1rem;
             }
 
-            /* Карточки – меньше отступы, меньше высота */
             .card-item {
                 width: 90%;
                 padding: 1.2rem 1.2rem 1rem;
@@ -1057,7 +1051,6 @@
                 font-size: 0.6rem;
             }
 
-            /* Плавающие кнопки поднимаем выше футера */
             .header-show-btn,
             .scroll-top-btn {
                 bottom: calc(4.5rem + 1rem);
@@ -1072,7 +1065,6 @@
                 height: 1.1rem;
             }
 
-            /* Отключаем hover-эффекты на мобильных */
             .is-mobile .card-item:hover,
             .is-mobile .favorite-btn:hover {
                 transform: none !important;
@@ -1081,7 +1073,6 @@
             .is-mobile .card-item.active {
                 box-shadow: 0 0.25rem 1.5rem rgba(0,0,0,0.08);
             }
-            /* Модальное окно без блюра */
             .is-mobile .modal-overlay.active {
                 backdrop-filter: none !important;
                 -webkit-backdrop-filter: none !important;
@@ -1108,7 +1099,6 @@
             }
         }
 
-        /* Скроллбар */
         ::-webkit-scrollbar {
             width: 0.25rem;
             height: 0.25rem;
@@ -1236,31 +1226,18 @@
             <div class="footer-inner">
                 <div class="footer-brand">scroll<span>txt</span></div>
                 <div class="footer-social">
-                    <a href="https://youtube.com/@scroll-txt?si=8TXKKAV25gpxBuk0" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="YouTube">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                        </svg>
+                    <a href="https://youtube.com/@scroll-txt" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                     </a>
                     <a href="https://t.me/scrolltxt" target="_blank" rel="noopener noreferrer" class="telegram" aria-label="Telegram">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                        </svg>
+                        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                     </a>
                     <a href="https://www.donationalerts.com/r/scrolltxt" target="_blank" class="donut" aria-label="Донатеры">
-                        <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <line x1="12" y1="2" x2="12" y2="4" stroke="currentColor" stroke-width="2"/>
-                            <line x1="12" y1="20" x2="12" y2="22" stroke="currentColor" stroke-width="2"/>
-                            <line x1="2" y1="12" x2="4" y2="12" stroke="currentColor" stroke-width="2"/>
-                            <line x1="20" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2"/>
-                        </svg>
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="2" x2="12" y2="4" stroke="currentColor" stroke-width="2"/><line x1="12" y1="20" x2="12" y2="22" stroke="currentColor" stroke-width="2"/><line x1="2" y1="12" x2="4" y2="12" stroke="currentColor" stroke-width="2"/><line x1="20" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2"/></svg>
                     </a>
                 </div>
             </div>
-            <div class="footer-bottom">
-                © 2026 scrolltxt
-            </div>
+            <div class="footer-bottom">© 2026 scrolltxt</div>
         </footer>
     </div>
 
@@ -1651,43 +1628,57 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  TOUCH (мобильные: горизонтальный свайп)
+        //  TOUCH (мобильные: вертикальный свайп вне карточки)
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchMoved = false;
+        let touchStartX = 0, touchStartY = 0;
+        let swipeEnabled = false; // true, если свайп может начаться (тач не на активной карточке и не на кнопках)
 
-        readerContainer.addEventListener('touchstart', (e) => {
+        document.body.addEventListener('touchstart', (e) => {
+            if (isAnimating || !isMobileDevice) return;
+            const target = e.target;
+            // Игнорируем, если тач начался на интерактивных элементах (кнопки, ссылки, инпуты, селекты)
+            if (target.closest('button, a, input, select, label')) {
+                swipeEnabled = false;
+                return;
+            }
+            // Игнорируем, если тач внутри активной карточки (чтобы работал скролл текста)
+            if (target.closest('.card-item.active')) {
+                swipeEnabled = false;
+                return;
+            }
+            // В остальных случаях (хедер, футер, пустое пространство) разрешаем свайп
+            swipeEnabled = true;
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
-            touchMoved = false;
-        }, { passive: true });
+        }, { passive: false });
 
-        readerContainer.addEventListener('touchmove', (e) => {
-            if (isAnimating) return;
+        document.body.addEventListener('touchmove', (e) => {
+            if (!swipeEnabled || isAnimating) return;
             const deltaX = e.touches[0].clientX - touchStartX;
             const deltaY = e.touches[0].clientY - touchStartY;
-            // Если горизонтальное движение больше вертикального и превышает порог, предотвращаем скролл страницы
-            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+            // Если горизонтальное смещение больше вертикального, не мешаем (возможно, горизонтальный скролл)
+            if (Math.abs(deltaX) > Math.abs(deltaY)) return;
+            // Предотвращаем скролл страницы (вертикальный) при свайпе
+            if (Math.abs(deltaY) > 10) {
                 e.preventDefault();
-                touchMoved = true;
             }
         }, { passive: false });
 
-        readerContainer.addEventListener('touchend', (e) => {
-            if (isAnimating || !touchMoved) return;
+        document.body.addEventListener('touchend', (e) => {
+            if (!swipeEnabled || isAnimating) return;
             const deltaX = e.changedTouches[0].clientX - touchStartX;
             const deltaY = e.changedTouches[0].clientY - touchStartY;
-            const threshold = 60;
-            if (Math.abs(deltaX) > threshold && Math.abs(deltaX) > Math.abs(deltaY)) {
-                if (deltaX < 0) {
-                    goToNext(); // свайп влево – следующая
+            const threshold = 40;
+            // Учитываем только вертикальный свайп с преобладанием по вертикали
+            if (Math.abs(deltaY) > threshold && Math.abs(deltaY) > Math.abs(deltaX)) {
+                if (deltaY < 0) {
+                    goToNext(); // свайп вверх → следующая
                 } else {
-                    goToPrev(); // свайп вправо – предыдущая
+                    goToPrev(); // свайп вниз → предыдущая
                 }
             }
-            touchMoved = false;
-        }, { passive: true });
+            swipeEnabled = false;
+        }, { passive: false });
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         //  KEYBOARD
@@ -1714,7 +1705,7 @@
                 if (!isNaN(id)) toggleFavorite(id);
                 return;
             }
-            // На десктопе клик по краям карточки
+            // На десктопе клик по краям карточки (мобильные игнорируем)
             if (!isMobileDevice) {
                 const card = e.target.closest('.card-item');
                 if (!card) return;
