@@ -928,6 +928,12 @@
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
         }
+        /* Отключаем hover-эффекты на мобильных (только transform/тени) */
+        .is-mobile .card-item:hover,
+        .is-mobile .favorite-btn:hover {
+            transform: none !important;
+            box-shadow: none !important;
+        }
 
         /* ─── RESPONSIVE ─── */
         @media (max-width: 50rem) {
@@ -1075,37 +1081,37 @@
                 height: 1.1rem;
             }
 
+            /* Карточки на мобильных – фиксированный футер */
+            .app {
+                padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+            }
+            .footer {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                z-index: 50;
+                background: var(--bg-footer);
+                border-top: 1px solid var(--border-light);
+                box-shadow: 0 -0.25rem 1rem rgba(0,0,0,0.05);
+            }
+            /* Корректируем максимальную высоту карточки, чтобы она не заходила под футер */
             .card-item {
-                width: 92%;
-                padding: 1.5rem 1.5rem 1.2rem;
-                border-radius: 1.5rem;
-                max-height: 72vh;
+                max-height: calc(72vh - 5rem);
             }
-            .card-item .card-title {
-                font-size: 1.3rem;
+
+            /* Плавающие кнопки смещаем выше, чтобы не перекрывались футером */
+            .header-show-btn,
+            .scroll-top-btn {
+                bottom: calc(5rem + 1.5rem);
             }
-            .card-item .card-content {
-                font-size: 0.9rem;
-                max-height: 20vh;
+
+            /* Дополнительная оптимизация теней на мобильных */
+            .card-item {
+                box-shadow: none;
             }
-            .card-item .card-category {
-                font-size: 0.6rem;
-                padding: 0.15rem 0.6rem 0.15rem 0.5rem;
-            }
-            .card-item .card-id {
-                font-size: 0.55rem;
-                padding: 0.1rem 0.5rem;
-            }
-            .card-item .card-source {
-                font-size: 0.7rem;
-            }
-            .card-item .favorite-btn {
-                font-size: 0.7rem;
-                padding: 0.2rem 0.7rem 0.2rem 0.5rem;
-            }
-            .card-item .favorite-btn svg {
-                width: 1rem;
-                height: 1rem;
+            .card-item.active {
+                box-shadow: 0 0.25rem 1.5rem rgba(0,0,0,0.08);
             }
         }
 
@@ -1308,8 +1314,8 @@
         //  DETECT MOBILE
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-        const isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-        if (isMobile) {
+        const isMobileDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        if (isMobileDevice) {
             document.documentElement.classList.add('is-mobile');
         }
 
@@ -1324,7 +1330,7 @@
         let touchStartY = 0;
         let touchDeltaY = 0;
         let showFavorites = false;
-        const TRANSITION_DURATION = 600;
+        const TRANSITION_DURATION = isMobileDevice ? 400 : 600; // Быстрее на мобильных
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         //  DOM REFS
@@ -1742,7 +1748,7 @@
 
         let wheelTimer = null;
 
-        if (!isMobile) {
+        if (!isMobileDevice) {
             readerContainer.addEventListener('wheel', handleWheel, { passive: false });
         }
 
@@ -1831,7 +1837,7 @@
                 return;
             }
 
-            if (isMobile) return;
+            if (isMobileDevice) return;
 
             const card = e.target.closest('.card-item');
             if (!card) return;
@@ -1928,7 +1934,7 @@
 
         loadData().then(() => { });
 
-        console.log('📖 scrolltxt — оптимизирован для мобильных, футер всегда виден');
+        console.log('📖 scrolltxt — футер закреплён, оптимизация для мобильных завершена');
     </script>
 </body>
 </html>
