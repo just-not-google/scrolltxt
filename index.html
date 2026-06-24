@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, viewport-fit=cover" />
     <title>scrolltxt · карточный фид</title>
     <style>
         /* ─── RESET & BASE ─── */
@@ -95,11 +95,13 @@
             font-size: var(--base-font);
             line-height: 1.5;
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             transition: background 0.3s, color 0.3s;
             height: 100%;
             overflow: hidden;
+            touch-action: manipulation;
         }
 
         body.modal-open {
@@ -111,7 +113,9 @@
             display: flex;
             flex-direction: column;
             transition: font-size 0.2s ease;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
+            height: 100%;
             overflow: hidden;
         }
 
@@ -121,7 +125,7 @@
             top: 0;
             z-index: 100;
             background: var(--bg-header);
-            backdrop-filter: blur(8px);
+            /* backdrop-filter: blur(8px); — отключаем для производительности на мобильных */
             -webkit-backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--border-light);
             padding: 0.5rem 1.5rem;
@@ -592,7 +596,6 @@
             overflow: hidden;
             background: var(--bg-body);
             transition: background 0.3s;
-            height: 100%;
             min-height: 0;
             touch-action: pan-y;
         }
@@ -847,6 +850,7 @@
             padding: 0.8rem 1.5rem 0.6rem;
             font-family: 'Inter', sans-serif;
             flex-shrink: 0;
+            width: 100%;
         }
         .footer-inner {
             max-width: 60rem;
@@ -907,6 +911,22 @@
             text-align: center;
             font-size: 0.7rem;
             color: var(--text-light);
+        }
+
+        /* ─── Мобильная оптимизация: отключаем тяжёлые эффекты ─── */
+        .is-mobile .header {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            background: var(--bg-header) !important;
+        }
+        .is-mobile .header-show-btn,
+        .is-mobile .scroll-top-btn {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        .is-mobile .modal-overlay.active {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
         }
 
         /* ─── RESPONSIVE ─── */
@@ -1478,7 +1498,7 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  LOAD DATA — берём категории из JSON
+        //  LOAD DATA
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
         async function loadData() {
@@ -1717,7 +1737,7 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  WHEEL — только для десктопа
+        //  WHEEL
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
         let wheelTimer = null;
@@ -1744,7 +1764,7 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  TOUCH — для всех устройств, на мобильных только свайп
+        //  TOUCH
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
         readerContainer.addEventListener('touchstart', (e) => {
@@ -1811,7 +1831,6 @@
                 return;
             }
 
-            // На мобильных клики по карточкам отключены через CSS
             if (isMobile) return;
 
             const card = e.target.closest('.card-item');
@@ -1909,7 +1928,7 @@
 
         loadData().then(() => { });
 
-        console.log('📖 scrolltxt — расстояния зафиксированы в vh, симметрия соблюдена');
+        console.log('📖 scrolltxt — оптимизирован для мобильных, футер всегда виден');
     </script>
 </body>
 </html>
