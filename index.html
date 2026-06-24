@@ -10,6 +10,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
 
         :root {
@@ -592,6 +594,7 @@
             transition: background 0.3s;
             height: 100%;
             min-height: 0;
+            touch-action: pan-y;
         }
 
         .card-stack {
@@ -616,17 +619,17 @@
             border: 1px solid var(--border-card);
             transition: transform var(--transition-duration) cubic-bezier(0.22, 1, 0.36, 1),
                 opacity var(--transition-duration) ease,
-                filter var(--transition-duration) ease,
                 box-shadow var(--transition-duration) ease,
                 background 0.3s, border-color 0.3s;
-            will-change: transform, opacity, filter;
+            will-change: transform, opacity;
             transform: translate(-50%, -50%) translateY(0) scale(1);
             opacity: 0;
-            filter: blur(0px);
             pointer-events: none;
             user-select: none;
             overflow-y: auto;
             max-height: 80vh;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
         .card-item.active {
@@ -634,41 +637,49 @@
             pointer-events: auto;
             z-index: 10;
             box-shadow: var(--shadow-card-hover);
-            filter: blur(0px);
         }
 
-        .card-item.above {
-            opacity: 0.4;
-            pointer-events: auto;
-            cursor: pointer;
-            z-index: 5;
-            filter: blur(6px);
-            transform: translate(-50%, -50%) translateY(-110%) scale(0.96);
-        }
-
+        /* ─── Десктоп: одинаковое расстояние в vh ─── */
+        .card-item.above,
         .card-item.below {
-            opacity: 0.4;
+            opacity: 0.25;
             pointer-events: auto;
             cursor: pointer;
             z-index: 5;
-            filter: blur(6px);
-            transform: translate(-50%, -50%) translateY(110%) scale(0.96);
+            transform: translate(-50%, -50%) translateY(-20vh) scale(0.92);
+        }
+        .card-item.below {
+            transform: translate(-50%, -50%) translateY(20vh) scale(0.92);
         }
 
         .card-item.hidden-above {
             opacity: 0;
             pointer-events: none;
             z-index: 1;
-            filter: blur(12px);
-            transform: translate(-50%, -50%) translateY(-220%) scale(0.85);
+            transform: translate(-50%, -50%) translateY(-40vh) scale(0.85);
         }
-
         .card-item.hidden-below {
             opacity: 0;
             pointer-events: none;
             z-index: 1;
-            filter: blur(12px);
-            transform: translate(-50%, -50%) translateY(220%) scale(0.85);
+            transform: translate(-50%, -50%) translateY(40vh) scale(0.85);
+        }
+
+        /* ─── Мобильная версия: меньшее расстояние в vh ─── */
+        .is-mobile .card-item.above,
+        .is-mobile .card-item.below {
+            opacity: 0.12;
+            pointer-events: none;
+            transform: translate(-50%, -50%) translateY(-15vh) scale(0.90);
+        }
+        .is-mobile .card-item.below {
+            transform: translate(-50%, -50%) translateY(15vh) scale(0.90);
+        }
+        .is-mobile .card-item.hidden-above {
+            transform: translate(-50%, -50%) translateY(-30vh) scale(0.85);
+        }
+        .is-mobile .card-item.hidden-below {
+            transform: translate(-50%, -50%) translateY(30vh) scale(0.85);
         }
 
         .card-item .card-top {
@@ -1076,57 +1087,6 @@
                 width: 1rem;
                 height: 1rem;
             }
-
-            .card-item.above {
-                transform: translate(-50%, -50%) translateY(-80%) scale(0.96);
-            }
-            .card-item.below {
-                transform: translate(-50%, -50%) translateY(80%) scale(0.96);
-            }
-            .card-item.hidden-above {
-                transform: translate(-50%, -50%) translateY(-160%) scale(0.85);
-            }
-            .card-item.hidden-below {
-                transform: translate(-50%, -50%) translateY(160%) scale(0.85);
-            }
-
-            .header-show-btn,
-            .scroll-top-btn {
-                bottom: 1rem;
-                width: 2.6rem;
-                height: 2.6rem;
-            }
-            .header-show-btn svg,
-            .scroll-top-btn svg {
-                width: 1.2rem;
-                height: 1.2rem;
-            }
-            .scroll-top-btn {
-                left: 1rem;
-            }
-            .header-show-btn {
-                right: 1rem;
-            }
-
-            #rulesModal .modal-box {
-                padding: 1.5rem 1.2rem;
-            }
-            #rulesModal .modal-box h2 {
-                font-size: 1.3rem;
-            }
-            #rulesModal .modal-box p {
-                font-size: 0.9rem;
-            }
-            .footer {
-                padding: 0.5rem 0.75rem 0.4rem;
-            }
-            .footer-brand {
-                font-size: 0.95rem;
-            }
-            .footer-social a svg {
-                width: 1.2rem;
-                height: 1.2rem;
-            }
         }
 
         @media (max-width: 25rem) {
@@ -1151,18 +1111,6 @@
             }
             .card-item .card-source {
                 font-size: 0.6rem;
-            }
-            .card-item.above {
-                transform: translate(-50%, -50%) translateY(-70%) scale(0.96);
-            }
-            .card-item.below {
-                transform: translate(-50%, -50%) translateY(70%) scale(0.96);
-            }
-            .card-item.hidden-above {
-                transform: translate(-50%, -50%) translateY(-140%) scale(0.8);
-            }
-            .card-item.hidden-below {
-                transform: translate(-50%, -50%) translateY(140%) scale(0.8);
             }
             .filters-group .fav-filter .label {
                 display: none;
@@ -1336,6 +1284,15 @@
     </div>
 
     <script>
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  DETECT MOBILE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        const isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        if (isMobile) {
+            document.documentElement.classList.add('is-mobile');
+        }
+
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         //  DATA LOAD & STATE
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1521,7 +1478,7 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  LOAD DATA — теперь берём категории из JSON
+        //  LOAD DATA — берём категории из JSON
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
         async function loadData() {
@@ -1538,7 +1495,6 @@
                     source: item.source || 'Источник не указан'
                 }));
 
-                // Заполняем выпадающий список категорий уникальными значениями из данных
                 const categories = [...new Set(allArticles.map(a => a.category).filter(Boolean))];
                 categories.sort();
                 categorySelect.innerHTML = '<option value="">Все категории</option>';
@@ -1761,10 +1717,14 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  WHEEL
+        //  WHEEL — только для десктопа
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
         let wheelTimer = null;
+
+        if (!isMobile) {
+            readerContainer.addEventListener('wheel', handleWheel, { passive: false });
+        }
 
         function handleWheel(e) {
             e.preventDefault();
@@ -1783,10 +1743,8 @@
             }, 150);
         }
 
-        readerContainer.addEventListener('wheel', handleWheel, { passive: false });
-
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  TOUCH
+        //  TOUCH — для всех устройств, на мобильных только свайп
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
         readerContainer.addEventListener('touchstart', (e) => {
@@ -1852,6 +1810,9 @@
                 }
                 return;
             }
+
+            // На мобильных клики по карточкам отключены через CSS
+            if (isMobile) return;
 
             const card = e.target.closest('.card-item');
             if (!card) return;
@@ -1948,7 +1909,7 @@
 
         loadData().then(() => { });
 
-        console.log('📖 scrolltxt — категории из JSON, адаптивные фильтры, анимация избранного, реальные иконки');
+        console.log('📖 scrolltxt — расстояния зафиксированы в vh, симметрия соблюдена');
     </script>
 </body>
 </html>
