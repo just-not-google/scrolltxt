@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes, viewport-fit=cover" />
     <title>scrolltxt · карточный фид</title>
     <style>
         /* ─── RESET & BASE ─── */
@@ -120,6 +120,7 @@
             overflow: hidden;
         }
 
+        /* Плавный переход темы для всех ключевых элементов */
         .header,
         .footer,
         .card-item,
@@ -626,6 +627,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .card-item {
@@ -649,9 +651,11 @@
             pointer-events: none;
             user-select: none;
             overflow-y: auto;
+            overflow-x: hidden;
             max-height: 80vh;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
+            contain: layout style paint;
         }
 
         .card-item.active {
@@ -668,6 +672,7 @@
             cursor: pointer;
             z-index: 5;
             transform: translate(-50%, -50%) translateY(-20vh) scale(0.92);
+            content-visibility: auto;
         }
         .card-item.below {
             transform: translate(-50%, -50%) translateY(20vh) scale(0.92);
@@ -678,11 +683,13 @@
             pointer-events: none;
             z-index: 1;
             transform: translate(-50%, -50%) translateY(-40vh) scale(0.85);
+            content-visibility: auto;
         }
         .card-item.hidden-below {
             transform: translate(-50%, -50%) translateY(40vh) scale(0.85);
         }
 
+        /* Внутреннее содержимое */
         .card-item .card-top {
             display: flex;
             flex-wrap: wrap;
@@ -734,6 +741,7 @@
             font-family: 'Georgia', 'Times New Roman', serif;
             max-height: 28vh;
             overflow-y: auto;
+            overflow-x: hidden;
             padding-right: 0.25rem;
         }
         .card-item .card-content::-webkit-scrollbar {
@@ -1033,7 +1041,7 @@
                 width: 100%;
                 z-index: 50;
                 padding: 0.5rem 1rem 0.4rem;
-                box-shadow: 0 -0.25rem 1rem rgba(0, 0, 0, 0.05);
+                box-shadow: 0 -0.25rem 1rem rgba(0,0,0,0.05);
             }
             .footer-inner {
                 gap: 0.3rem 1rem;
@@ -1069,7 +1077,7 @@
                 box-shadow: none !important;
             }
             .is-mobile .card-item.active {
-                box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.08);
+                box-shadow: 0 0.25rem 1.5rem rgba(0,0,0,0.08);
             }
             .is-mobile .modal-overlay.active {
                 backdrop-filter: none !important;
@@ -1153,25 +1161,25 @@
 
                 <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
                     <svg class="sun-icon" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="5" />
-                        <line x1="12" y1="1" x2="12" y2="3" />
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                        <line x1="1" y1="12" x2="3" y2="12" />
-                        <line x1="21" y1="12" x2="23" y2="12" />
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
                     </svg>
                     <svg class="moon-icon" viewBox="0 0 24 24">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                     </svg>
                 </button>
 
                 <button class="header-toggle" id="headerToggle" aria-label="Скрыть/показать шапку">
                     <svg viewBox="0 0 24 24" id="headerToggleIcon">
-                        <circle cx="12" cy="12" r="10" />
-                        <line x1="12" y1="8" x2="12" y2="16" />
-                        <line x1="8" y1="12" x2="16" y2="12" />
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="16"/>
+                        <line x1="8" y1="12" x2="16" y2="12"/>
                     </svg>
                 </button>
 
@@ -1186,14 +1194,14 @@
         <!-- ═══ FLOATING BUTTONS ═══ -->
         <button class="header-show-btn" id="headerShowBtn" aria-label="Показать шапку">
             <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="8" y1="12" x2="16" y2="12" />
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="8" y1="12" x2="16" y2="12"/>
             </svg>
         </button>
 
         <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Вернуться вверх">
             <svg viewBox="0 0 24 24">
-                <polyline points="18 15 12 9 6 15" />
+                <polyline points="18 15 12 9 6 15"/>
             </svg>
         </button>
 
@@ -1214,9 +1222,7 @@
 
         <!-- ═══ READER / CARD STACK ═══ -->
         <div class="reader-container" id="readerContainer">
-            <div class="card-stack" id="cardStack">
-                <!-- cards rendered here -->
-            </div>
+            <div class="card-stack" id="cardStack"></div>
         </div>
 
         <!-- ═══ FOOTER ═══ -->
@@ -1225,13 +1231,13 @@
                 <div class="footer-brand">scroll<span>txt</span></div>
                 <div class="footer-social">
                     <a href="https://youtube.com/@scroll-txt" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="YouTube">
-                        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg>
+                        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                     </a>
                     <a href="https://t.me/scrolltxt" target="_blank" rel="noopener noreferrer" class="telegram" aria-label="Telegram">
-                        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" /></svg>
+                        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                     </a>
                     <a href="https://www.donationalerts.com/r/scrolltxt" target="_blank" class="donut" aria-label="Донатеры">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" /><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2" /><line x1="12" y1="2" x2="12" y2="4" stroke="currentColor" stroke-width="2" /><line x1="12" y1="20" x2="12" y2="22" stroke="currentColor" stroke-width="2" /><line x1="2" y1="12" x2="4" y2="12" stroke="currentColor" stroke-width="2" /><line x1="20" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" /></svg>
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="2" x2="12" y2="4" stroke="currentColor" stroke-width="2"/><line x1="12" y1="20" x2="12" y2="22" stroke="currentColor" stroke-width="2"/><line x1="2" y1="12" x2="4" y2="12" stroke="currentColor" stroke-width="2"/><line x1="20" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2"/></svg>
                     </a>
                 </div>
             </div>
@@ -1322,14 +1328,12 @@
             localStorage.setItem('scrolltxt-header-hidden', hidden ? 'true' : 'false');
             if (hidden) {
                 header.classList.add('header-hidden');
-                headerToggleIcon.innerHTML =
-                    `<circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/>`;
+                headerToggleIcon.innerHTML = `<circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/>`;
                 headerToggle.setAttribute('aria-label', 'Показать шапку');
                 headerShowBtn.classList.add('visible');
             } else {
                 header.classList.remove('header-hidden');
-                headerToggleIcon.innerHTML =
-                    `<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>`;
+                headerToggleIcon.innerHTML = `<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>`;
                 headerToggle.setAttribute('aria-label', 'Скрыть шапку');
                 headerShowBtn.classList.remove('visible');
             }
@@ -1359,7 +1363,6 @@
         //  ZOOM
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         let currentZoom = 1;
-
         function setZoom(level) {
             currentZoom = Math.min(Math.max(level, 0.7), 1.6);
             document.documentElement.style.fontSize = (16 * currentZoom) + 'px';
@@ -1379,11 +1382,9 @@
             }
             return [];
         }
-
         function setFavorites(favs) {
             localStorage.setItem('scrolltxt-favorites', JSON.stringify(favs));
         }
-
         function toggleFavorite(id) {
             const favs = getFavorites();
             const idx = favs.indexOf(id);
@@ -1393,7 +1394,6 @@
             if (showFavorites) applyFiltersAndRender();
             else renderCards();
         }
-
         function isFavorite(id) {
             return getFavorites().includes(id);
         }
@@ -1438,8 +1438,7 @@
                 applyFiltersAndRender();
             } catch (e) {
                 console.error('Ошибка загрузки data.json:', e);
-                cardStack.innerHTML =
-                    '<div style="color:var(--text-light);text-align:center;padding:2rem;">Не удалось загрузить данные</div>';
+                cardStack.innerHTML = '<div style="color:var(--text-light);text-align:center;padding:2rem;">Не удалось загрузить данные</div>';
             }
         }
 
@@ -1468,8 +1467,7 @@
         function applyFiltersAndRender() {
             filteredArticles = getFilteredArticles();
             if (filteredArticles.length === 0) {
-                cardStack.innerHTML =
-                    `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text-light);gap:0.5rem;text-align:center;padding:1rem;"><span style="font-size:1.1rem;">${showFavorites ? 'Нет избранных статей' : 'Ничего не найдено'}</span><span style="font-size:0.85rem;opacity:0.7;">${showFavorites ? 'Добавьте статьи в избранное' : 'Попробуйте другой запрос'}</span></div>`;
+                cardStack.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text-light);gap:0.5rem;text-align:center;padding:1rem;"><span style="font-size:1.1rem;">${showFavorites ? 'Нет избранных статей' : 'Ничего не найдено'}</span><span style="font-size:0.85rem;opacity:0.7;">${showFavorites ? 'Добавьте статьи в избранное' : 'Попробуйте другой запрос'}</span></div>`;
                 countDisplay.textContent = '0';
                 return;
             }
@@ -1494,19 +1492,19 @@
         function buildCardInnerHTML(article, fav) {
             const favText = fav ? 'В избранном' : 'В избранное';
             return `
-                    <div class="card-top">
-                        <span class="card-category">${escapeHtml(article.category)}</span>
-                        <span class="card-id">ID: ${article.id}</span>
-                    </div>
-                    <div class="card-title">${escapeHtml(article.title)}</div>
-                    <div class="card-content">${escapeHtml(article.content)}</div>
-                    <div class="card-source"><strong>Источник:</strong> ${escapeHtml(article.source)}</div>
-                    <div class="card-footer">
-                        <button class="favorite-btn ${fav ? 'is-favorite' : ''}" data-id="${article.id}">
-                            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                            <span class="favorite-text">${favText}</span>
-                        </button>
-                    </div>`;
+                <div class="card-top">
+                    <span class="card-category">${escapeHtml(article.category)}</span>
+                    <span class="card-id">ID: ${article.id}</span>
+                </div>
+                <div class="card-title">${escapeHtml(article.title)}</div>
+                <div class="card-content">${escapeHtml(article.content)}</div>
+                <div class="card-source"><strong>Источник:</strong> ${escapeHtml(article.source)}</div>
+                <div class="card-footer">
+                    <button class="favorite-btn ${fav ? 'is-favorite' : ''}" data-id="${article.id}">
+                        <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <span class="favorite-text">${favText}</span>
+                    </button>
+                </div>`;
         }
 
         function createCardElement(article, position) {
@@ -1563,12 +1561,9 @@
             stack.appendChild(belowEl);
 
             requestAnimationFrame(() => {
-                if (aboveEl) { aboveEl.className = 'card-item above';
-                    aboveEl.dataset.pos = 'above'; }
-                if (activeEl2) { activeEl2.className = 'card-item active';
-                    activeEl2.dataset.pos = 'active'; }
-                if (belowEl) { belowEl.className = 'card-item below';
-                    belowEl.dataset.pos = 'below'; }
+                if (aboveEl) { aboveEl.className = 'card-item above'; aboveEl.dataset.pos = 'above'; }
+                if (activeEl2) { activeEl2.className = 'card-item active'; activeEl2.dataset.pos = 'active'; }
+                if (belowEl) { belowEl.className = 'card-item below'; belowEl.dataset.pos = 'below'; }
             });
         }
 
@@ -1587,7 +1582,6 @@
         //  NAVIGATION
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         let pendingDirection = 0;
-        let navigatedByTouch = false;
 
         function performNavigation(direction) {
             if (isAnimating) {
@@ -1616,7 +1610,6 @@
         }
 
         function goToPrev() { performNavigation(-1); }
-
         function goToNext() { performNavigation(1); }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1626,7 +1619,6 @@
         if (!isMobileDevice) {
             readerContainer.addEventListener('wheel', handleWheel, { passive: false });
         }
-
         function handleWheel(e) {
             e.preventDefault();
             const delta = e.deltaY;
@@ -1640,155 +1632,80 @@
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  TOUCH (mobile: swipe + tap on cards)
+        //  TOUCH (mobile: swipe only outside any card)
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        let touchStartX = 0,
-            touchStartY = 0;
-        let touchStartTarget = null;
-        let isTapping = false;
+        let touchStartX = 0, touchStartY = 0;
         let swipeEnabled = false;
 
-        if (isMobileDevice) {
-            document.body.addEventListener('touchstart', handleTouchStart, { passive: false });
-            document.body.addEventListener('touchmove', handleTouchMove, { passive: false });
-            document.body.addEventListener('touchend', handleTouchEnd, { passive: false });
-        }
-
-        function handleTouchStart(e) {
-            if (isAnimating) return;
+        document.body.addEventListener('touchstart', (e) => {
+            if (isAnimating || !isMobileDevice) return;
             const target = e.target;
-            // Игнорируем интерактивные элементы
-            if (target.closest('button, a, input, select, label')) {
+            // Игнорируем интерактивные элементы и любые карточки
+            if (target.closest('button, a, input, select, label, .card-item')) {
                 swipeEnabled = false;
-                isTapping = false;
                 return;
             }
-            // Игнорируем, если тач внутри активной карточки (чтобы работал скролл текста)
-            if (target.closest('.card-item.active')) {
-                swipeEnabled = false;
-                isTapping = false;
-                return;
-            }
+            swipeEnabled = true;
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: false });
 
-            const card = target.closest('.card-item');
-            if (!card) {
-                swipeEnabled = false;
-                isTapping = false;
-                return;
-            }
-
-            // Разрешаем свайп только если карточка не активна
-            if (!card.classList.contains('active')) {
-                swipeEnabled = true;
-                touchStartTarget = card;
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-                isTapping = true;
-            } else {
-                swipeEnabled = false;
-                isTapping = false;
-            }
-        }
-
-        function handleTouchMove(e) {
-            if (!swipeEnabled || !isTapping || isAnimating) return;
+        document.body.addEventListener('touchmove', (e) => {
+            if (!swipeEnabled || isAnimating) return;
             const deltaX = e.touches[0].clientX - touchStartX;
             const deltaY = e.touches[0].clientY - touchStartY;
-            // Если горизонтальное смещение больше вертикального, не мешаем
             if (Math.abs(deltaX) > Math.abs(deltaY)) return;
-            // Предотвращаем скролл страницы при свайпе
             if (Math.abs(deltaY) > 10) {
                 e.preventDefault();
             }
-        }
+        }, { passive: false });
 
-        function handleTouchEnd(e) {
-            if (!swipeEnabled || !isTapping || isAnimating) {
-                swipeEnabled = false;
-                isTapping = false;
-                touchStartTarget = null;
-                return;
-            }
-
+        document.body.addEventListener('touchend', (e) => {
+            if (!swipeEnabled || isAnimating) return;
             const deltaX = e.changedTouches[0].clientX - touchStartX;
             const deltaY = e.changedTouches[0].clientY - touchStartY;
-            const threshold = 50;
-
-            // Свайп: вертикальное движение больше порога и преобладает над горизонтальным
+            const threshold = 40;
             if (Math.abs(deltaY) > threshold && Math.abs(deltaY) > Math.abs(deltaX)) {
-                navigatedByTouch = true;
-                setTimeout(() => { navigatedByTouch = false; }, 400);
                 if (deltaY < 0) {
-                    goToNext();
+                    goToNext(); // свайп вверх
                 } else {
-                    goToPrev();
-                }
-                swipeEnabled = false;
-                isTapping = false;
-                touchStartTarget = null;
-                return;
-            }
-
-            // Тап: небольшое движение, сработал на карточке above/below
-            if (Math.abs(deltaX) < 20 && Math.abs(deltaY) < 20) {
-                const card = touchStartTarget;
-                if (card) {
-                    if (card.classList.contains('above')) {
-                        navigatedByTouch = true;
-                        setTimeout(() => { navigatedByTouch = false; }, 400);
-                        goToPrev();
-                    } else if (card.classList.contains('below')) {
-                        navigatedByTouch = true;
-                        setTimeout(() => { navigatedByTouch = false; }, 400);
-                        goToNext();
-                    }
+                    goToPrev(); // свайп вниз
                 }
             }
-
             swipeEnabled = false;
-            isTapping = false;
-            touchStartTarget = null;
-        }
-
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  CLICK on card stack (desktop + mobile fallback)
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        cardStack.addEventListener('click', (e) => {
-            // На мобильных если сработал тач-навигация — пропускаем клик
-            if (navigatedByTouch) return;
-
-            const btn = e.target.closest('.favorite-btn');
-            if (btn) {
-                const id = parseInt(btn.dataset.id, 10);
-                if (!isNaN(id)) toggleFavorite(id);
-                return;
-            }
-
-            const card = e.target.closest('.card-item');
-            if (!card) return;
-            // Не кликаем по активной карточке (она уже открыта)
-            if (card.classList.contains('active')) return;
-
-            if (card.classList.contains('above')) {
-                goToPrev();
-            } else if (card.classList.contains('below')) {
-                goToNext();
-            }
-        });
+        }, { passive: false });
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         //  KEYBOARD
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         document.addEventListener('keydown', (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
-            if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault();
-                goToPrev(); } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault();
-                goToNext(); } else if (e.key === 'Home') { e.preventDefault(); if (activeIndex !== 0) { activeIndex = 0;
-                    renderCards(); } } else if (e.key === 'End') {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); goToPrev(); }
+            else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); goToNext(); }
+            else if (e.key === 'Home') { e.preventDefault(); if (activeIndex !== 0) { activeIndex = 0; renderCards(); } }
+            else if (e.key === 'End') {
                 e.preventDefault();
                 const total = filteredArticles.length;
-                if (activeIndex !== total - 1 && total > 0) { activeIndex = total - 1;
-                    renderCards(); }
+                if (activeIndex !== total - 1 && total > 0) { activeIndex = total - 1; renderCards(); }
+            }
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  FAVORITE CLICK
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        cardStack.addEventListener('click', (e) => {
+            const btn = e.target.closest('.favorite-btn');
+            if (btn) {
+                const id = parseInt(btn.dataset.id, 10);
+                if (!isNaN(id)) toggleFavorite(id);
+                return;
+            }
+            // На десктопе клик по краям карточки (мобильные игнорируем)
+            if (!isMobileDevice) {
+                const card = e.target.closest('.card-item');
+                if (!card) return;
+                if (card.classList.contains('above')) goToPrev();
+                else if (card.classList.contains('below')) goToNext();
             }
         });
 
@@ -1827,20 +1744,13 @@
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         //  MODAL
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        function showRulesModal() { rulesModal.classList.add('active');
-            document.body.classList.add('modal-open'); }
-
-        function hideRulesModal() { rulesModal.classList.remove('active');
-            document.body.classList.remove('modal-open'); }
+        function showRulesModal() { rulesModal.classList.add('active'); document.body.classList.add('modal-open'); }
+        function hideRulesModal() { rulesModal.classList.remove('active'); document.body.classList.remove('modal-open'); }
         const modalShown = localStorage.getItem('scrolltxt-modal-shown');
         if (!modalShown) setTimeout(showRulesModal, 400);
-        understoodBtn.addEventListener('click', () => { localStorage.setItem('scrolltxt-modal-shown', 'true');
-            hideRulesModal(); });
-        modalCloseBtn.addEventListener('click', () => { localStorage.setItem('scrolltxt-modal-shown', 'true');
-            hideRulesModal(); });
-        rulesModal.addEventListener('click', (e) => { if (e.target === rulesModal) { localStorage.setItem(
-                    'scrolltxt-modal-shown', 'true');
-                hideRulesModal(); } });
+        understoodBtn.addEventListener('click', () => { localStorage.setItem('scrolltxt-modal-shown', 'true'); hideRulesModal(); });
+        modalCloseBtn.addEventListener('click', () => { localStorage.setItem('scrolltxt-modal-shown', 'true'); hideRulesModal(); });
+        rulesModal.addEventListener('click', (e) => { if (e.target === rulesModal) { localStorage.setItem('scrolltxt-modal-shown', 'true'); hideRulesModal(); } });
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         //  HEADER SCROLL SHADOW
