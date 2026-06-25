@@ -16,8 +16,6 @@
             --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             --radius: 1.25rem;
             --radius-sm: 0.75rem;
-
-            /* Светлая тема – расширенная палитра серого */
             --bg: #f5f7fa;
             --bg-card: #ffffff;
             --bg-header: rgba(255, 255, 255, 0.92);
@@ -26,20 +24,16 @@
             --bg-tag: #e8ecf1;
             --bg-footer: #ffffff;
             --bg-modal: rgba(0, 0, 0, 0.6);
-
             --text: #1a1d23;
             --text-secondary: #4a5058;
             --text-muted: #7a828e;
             --text-light: #aab2bd;
-
             --border: #e0e4e9;
             --border-card: #e8ecf1;
-
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
             --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.08);
             --shadow-btn: 0 6px 24px rgba(0, 0, 0, 0.10);
-
             --gold: #f1c40f;
             --gold-soft: rgba(241, 196, 15, 0.15);
         }
@@ -53,15 +47,12 @@
             --bg-tag: #343840;
             --bg-footer: #181a1f;
             --bg-modal: rgba(0, 0, 0, 0.8);
-
             --text: #eef0f2;
             --text-secondary: #c5c9d0;
             --text-muted: #9aa0aa;
             --text-light: #6b7380;
-
             --border: #3d424a;
             --border-card: #343840;
-
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
             --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.5);
@@ -93,7 +84,6 @@
             min-height: 100vh;
         }
 
-        /* ─── HEADER ─── */
         .header {
             position: sticky;
             top: 0;
@@ -157,7 +147,6 @@
             color: var(--text-secondary);
         }
 
-        /* ─── ПОИСК (ЦЕНТР) ─── */
         .search-wrap {
             width: 100%;
             max-width: 46rem;
@@ -268,7 +257,6 @@
             transform: scale(1.1);
         }
 
-        /* ─── HEADER ACTIONS (ПРАВО) ─── */
         .header-actions {
             display: flex;
             align-items: center;
@@ -352,7 +340,6 @@
             font-weight: 500;
         }
 
-        /* ─── FEED ─── */
         .feed {
             max-width: 46rem;
             margin: 1.5rem auto 0;
@@ -502,7 +489,6 @@
             margin-top: 0.5rem;
         }
 
-        /* ─── FOOTER ─── */
         .footer {
             background: var(--bg-footer);
             border-top: 1px solid var(--border);
@@ -520,6 +506,7 @@
             flex-wrap: wrap;
             gap: 2rem 3rem;
             justify-content: space-between;
+            align-items: center;
         }
 
         .footer-brand {
@@ -540,24 +527,47 @@
             max-width: 20rem;
         }
 
-        .footer-links ul {
-            list-style: none;
+        .footer-social {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem 1.5rem;
-            margin-top: 0.2rem;
+            gap: 1rem;
+            align-items: center;
         }
 
-        .footer-links a {
-            color: var(--text-secondary);
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.4rem;
+            height: 2.4rem;
+            border-radius: 50%;
+            background: var(--bg-tag);
+            color: var(--text-muted);
+            transition: background 0.2s, color 0.2s, transform 0.15s;
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-            font-weight: 450;
+            border: 1px solid transparent;
         }
 
-        .footer-links a:hover {
+        .social-link:hover {
+            background: var(--bg-hover);
             color: var(--text);
+            transform: scale(1.05);
+        }
+
+        .social-link svg {
+            width: 1.4rem;
+            height: 1.4rem;
+            fill: currentColor;
+            stroke: none;
+        }
+
+        .social-link.youtube:hover {
+            color: #ff0000;
+        }
+        .social-link.telegram:hover {
+            color: #0088cc;
+        }
+        .social-link.donate:hover {
+            color: #e74c3c;
         }
 
         .footer-bottom {
@@ -570,7 +580,6 @@
             color: var(--text-light);
         }
 
-        /* ─── FLOATING BUTTONS ─── */
         .float-btn {
             position: fixed;
             z-index: 200;
@@ -608,19 +617,16 @@
             transform: scale(0.92);
         }
 
-        /* Левая кнопка (Вверх) */
         .scroll-top-btn {
             bottom: 1.75rem;
             left: 1.75rem;
         }
 
-        /* Правая кнопка (Показать шапку) */
         .header-show-btn {
             bottom: 1.75rem;
             right: 1.75rem;
         }
 
-        /* Центральная кнопка (переключение режима) — прямоугольная с закруглёнными углами */
         .infinite-toggle-btn {
             bottom: 1.75rem;
             left: 50%;
@@ -655,7 +661,6 @@
             transform: translateX(-50%) scale(0.92);
         }
 
-        /* ─── LOAD MORE BUTTON ─── */
         .load-more-wrap {
             text-align: center;
             margin-top: 1.25rem;
@@ -684,7 +689,6 @@
             transform: scale(0.96);
         }
 
-        /* ─── MODAL ─── */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -778,7 +782,6 @@
             transform: scale(0.96);
         }
 
-        /* ─── RESPONSIVE ─── */
         @media (max-width: 56rem) {
             .header {
                 display: flex;
@@ -786,11 +789,9 @@
                 padding: 0.5rem 1rem;
                 gap: 0.5rem;
             }
-
             .header-left {
                 flex-shrink: 0;
             }
-
             .search-wrap {
                 flex: 1 1 100%;
                 max-width: 100%;
@@ -798,12 +799,10 @@
                 margin: 0.5rem 0 0;
                 gap: 0.4rem;
             }
-
             .search-filters {
                 flex-wrap: wrap;
                 gap: 0.25rem;
             }
-
             .search-filters select {
                 flex: 1 1 0;
                 min-width: 0;
@@ -813,79 +812,65 @@
                 background-position: right 0.3rem center;
                 text-align: center;
             }
-
             .search-input-wrap {
                 margin-top: 0.2rem;
                 width: 100%;
             }
-
             .search-input-wrap input {
                 font-size: 0.85rem;
                 padding: 0.4rem 0.2rem;
             }
-
             .header-actions {
                 margin-left: auto;
                 justify-self: end;
             }
-
             .stats {
                 font-size: 0.7rem;
                 padding: 0.15rem 0.6rem;
             }
-
             .icon-btn {
                 width: 1.9rem;
                 height: 1.9rem;
                 font-size: 0.9rem;
             }
-
             .zoom-group .icon-btn {
                 width: 1.7rem;
                 height: 1.7rem;
                 font-size: 0.7rem;
             }
-
             .zoom-group .icon-btn.reset {
                 font-size: 0.6rem;
                 padding: 0 0.4rem;
             }
-
             .feed {
                 padding: 0 0.75rem 1.5rem;
                 gap: 1.25rem;
                 margin-top: 0.75rem;
             }
-
             .article {
                 padding: 1.25rem 1.25rem 1rem;
                 border-radius: 1rem;
             }
-
             .article-title {
                 font-size: 1.25rem;
             }
-
             .article-content {
                 font-size: 0.93rem;
                 line-height: 1.6;
             }
-
             .footer {
                 padding: 2rem 1rem 1.5rem;
             }
-
             .footer-inner {
                 flex-direction: column;
                 gap: 1.5rem;
+                align-items: flex-start;
             }
-
             .float-btn {
                 width: 2.8rem;
                 height: 2.8rem;
                 font-size: 1.4rem;
             }
-
             .header-show-btn {
                 bottom: 1.25rem;
                 right: 1.25rem;
@@ -907,7 +892,6 @@
                 padding: 0.4rem 0.6rem;
                 gap: 0.35rem;
             }
-
             .logo {
                 font-size: 1.1rem;
                 gap: 0.3rem;
@@ -915,7 +899,6 @@
             .logo-img {
                 height: 1.6rem;
             }
-
             .search-filters select {
                 font-size: 0.6rem;
                 padding: 0.2rem 0.2rem;
@@ -923,7 +906,6 @@
                 background-size: 6px 4px;
                 background-position: right 0.2rem center;
             }
-
             .search-input-wrap {
                 padding: 0.05rem 0.05rem 0.05rem 0.6rem;
             }
@@ -931,7 +913,6 @@
                 font-size: 0.8rem;
                 padding: 0.3rem 0.1rem;
             }
-
             .stats {
                 font-size: 0.6rem;
                 padding: 0.1rem 0.5rem;
@@ -950,7 +931,6 @@
                 font-size: 0.5rem;
                 padding: 0 0.3rem;
             }
-
             .article {
                 padding: 1rem 1rem 0.85rem;
             }
@@ -970,18 +950,15 @@
             .article-source {
                 font-size: 0.65rem;
             }
-
             .favorite-btn {
                 font-size: 0.78rem;
                 padding: 0.15rem 0.5rem 0.15rem 0.3rem;
             }
-
             .feed {
                 padding: 0 0.5rem 1rem;
                 gap: 0.9rem;
                 margin-top: 0.5rem;
             }
-
             .float-btn {
                 width: 2.4rem;
                 height: 2.4rem;
@@ -1001,7 +978,6 @@
                 padding: 0 0.8rem;
                 font-size: 0.7rem;
             }
-
             .modal-box {
                 padding: 1.5rem 1.2rem;
             }
@@ -1015,9 +991,16 @@
                 font-size: 0.85rem;
                 padding: 0.6rem 1.6rem;
             }
+            .social-link {
+                width: 2rem;
+                height: 2rem;
+            }
+            .social-link svg {
+                width: 1.2rem;
+                height: 1.2rem;
+            }
         }
 
-        /* ─── SCROLLBAR ─── */
         ::-webkit-scrollbar {
             width: 4px;
             height: 4px;
@@ -1036,7 +1019,6 @@
 </head>
 <body>
     <div class="app" id="app">
-        <!-- HEADER -->
         <header class="header" id="header">
             <div class="header-left">
                 <a href="index.html" class="logo">
@@ -1045,7 +1027,6 @@
                 </a>
             </div>
 
-            <!-- ПОИСКОВЫЕ НАСТРОЙКИ (ЦЕНТР) -->
             <div class="search-wrap">
                 <div class="search-filters">
                     <select id="searchFilter">
@@ -1072,14 +1053,11 @@
                 </div>
             </div>
 
-            <!-- НАСТРОЙКИ (ПРАВО) -->
             <div class="header-actions">
                 <span class="stats" id="stats">Статей: <strong id="countDisplay">0</strong></span>
-
                 <button class="icon-btn" id="themeToggle" aria-label="Переключить тему">◐</button>
                 <button class="icon-btn" id="resetSeenBtn" aria-label="Сбросить просмотренные" title="Сбросить историю просмотра">↺</button>
                 <button class="icon-btn" id="headerToggle" aria-label="Скрыть/показать шапку">▼</button>
-
                 <div class="zoom-group">
                     <button class="icon-btn" id="zoomOut" aria-label="Уменьшить">A−</button>
                     <button class="icon-btn reset" id="zoomReset" aria-label="Сбросить">↺</button>
@@ -1088,36 +1066,40 @@
             </div>
         </header>
 
-        <!-- FEED -->
-        <div class="feed" id="feed">
-            <!-- сюда будут вставляться статьи -->
-        </div>
+        <div class="feed" id="feed"></div>
 
-        <!-- FOOTER -->
         <footer class="footer">
             <div class="footer-inner">
                 <div>
                     <div class="footer-brand">scroll<span>txt</span></div>
                     <div class="footer-desc">Умная лента для тех, кто ищет смысл. Без шума, только суть.</div>
                 </div>
-                <div class="footer-links">
-                    <ul>
-                        <li><a href="#" target="_blank">YouTube</a></li>
-                        <li><a href="#" target="_blank">Telegram</a></li>
-                        <li><a href="donut.html" target="_blank">Доноры</a></li>
-                    </ul>
+                <div class="footer-social">
+                    <a href="https://t.me/scrolltxt" target="_blank" class="social-link youtube" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+                    <a href="https://youtube.com/@scroll-txt?si=8TXKKAV25gpxBuk0" target="_blank" class="social-link telegram" aria-label="Telegram">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.donationalerts.com/r/scrolltxt" target="_blank" class="social-link donate" aria-label="Доноры">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    </a>
                 </div>
             </div>
             <div class="footer-bottom">© 2026 scrolltxt</div>
         </footer>
     </div>
 
-    <!-- ПЛАВАЮЩИЕ КНОПКИ -->
     <button class="float-btn scroll-top-btn" id="scrollTopBtn" aria-label="Вверх">▲</button>
     <button class="float-btn infinite-toggle-btn" id="infiniteToggleBtn" aria-label="Режим ленты">Беск</button>
     <button class="float-btn header-show-btn" id="headerShowBtn" aria-label="Показать шапку">▲</button>
 
-    <!-- MODAL -->
     <div class="modal-overlay" id="rulesModal">
         <div class="modal-box">
             <button class="modal-close" id="modalCloseBtn" aria-label="Закрыть">×</button>
@@ -1129,16 +1111,14 @@
 
     <script>
         (function() {
-            // ─── КОНСТАНТЫ ──────────────────────────────────────
             const API_URL = './data.json';
             const INFINITE_STEP = 20;
             const PAGE_SIZE = 50;
             const MAX_DOM_ARTICLES = 100;
 
-            // ─── ГЛОБАЛЬНОЕ СОСТОЯНИЕ ───────────────────────────
             let allArticles = [];
             let seenArticleIds = new Set();
-            let loadedArticles = []; // все статьи, которые сейчас в DOM (в порядке их загрузки)
+            let loadedArticles = [];
             let currentUnseenFiltered = [];
             let pageIndex = 0;
             let isLoading = false;
@@ -1150,7 +1130,6 @@
             let currentView = 'all';
             let selectedCategory = '';
 
-            // ─── LOCAL STORAGE КЛЮЧИ ───────────────────────────
             const LS_FAVORITES = 'scrolltxt-favorites';
             const LS_SEEN = 'scrolltxt-seen-articles';
             const LS_THEME = 'scrolltxt-theme';
@@ -1159,7 +1138,6 @@
             const LS_MODAL_SHOWN = 'scrolltxt-modal-shown';
             const LS_INFINITE_MODE = 'scrolltxt-infinite-mode';
 
-            // ─── DOM ЭЛЕМЕНТЫ ──────────────────────────────────
             const feedEl = document.getElementById('feed');
             const countDisplay = document.getElementById('countDisplay');
             const searchInput = document.getElementById('searchInput');
@@ -1182,7 +1160,6 @@
             const understoodBtn = document.getElementById('understoodBtn');
             const resetSeenBtn = document.getElementById('resetSeenBtn');
 
-            // ─── ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ──────────────────────────
             function shuffle(arr) {
                 for (let i = arr.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
@@ -1191,7 +1168,6 @@
                 return arr;
             }
 
-            // ─── ЗАГРУЗКА СТАТЕЙ ИЗ data.json ────────────────────
             async function fetchArticles() {
                 try {
                     const resp = await fetch(API_URL);
@@ -1216,13 +1192,12 @@
                 }
             }
 
-            // ─── ИНИЦИАЛИЗАЦИЯ ДАННЫХ ──────────────────────────
             async function initArticles() {
                 allArticles = await fetchArticles();
                 updateCategoryFilter();
                 loadSeenArticles();
                 loadFavorites();
-                updateCurrentUnseenFiltered();
+                rebuildFeed();
             }
 
             function updateCategoryFilter() {
@@ -1277,20 +1252,17 @@
                 if (article) {
                     article.favorite = !article.favorite;
                     saveFavorites();
-                    // Обновляем кнопки в DOM
                     document.querySelectorAll(`.favorite-btn[data-id="${id}"]`).forEach(btn => {
                         const fav = article.favorite;
                         btn.classList.toggle('favorited', fav);
                         btn.querySelector('.fav-icon').textContent = fav ? '★' : '☆';
                         btn.childNodes[2].textContent = fav ? 'В избранном' : 'В избранное';
                     });
-                    // Если мы в режиме "Избранное" и статья перестала быть избранной – удаляем её из DOM
                     if (currentView === 'favorites' && !article.favorite) {
                         const el = document.querySelector(`.article[data-id="${id}"]`);
                         if (el) el.remove();
                         loadedArticles = loadedArticles.filter(a => a.id !== id);
                         updateStats();
-                        // Если больше нет избранных – показываем сообщение
                         if (loadedArticles.length === 0) {
                             renderEmptyState();
                         }
@@ -1298,28 +1270,24 @@
                 }
             }
 
-            // ─── СБРОС ПРОСМОТРЕННЫХ ─────────────────────────────
             function resetSeenHistory() {
                 if (confirm('Сбросить историю просмотра? Все статьи будут показаны заново.')) {
                     localStorage.removeItem(LS_SEEN);
                     seenArticleIds = new Set();
-                    // Очищаем DOM и loadedArticles
-                    feedEl.innerHTML = '';
-                    loadedArticles = [];
-                    pageIndex = 0;
-                    updateCurrentUnseenFiltered();
-                    applyCurrentMode();
+                    rebuildFeed();
                 }
             }
 
-            // ─── ФИЛЬТРАЦИЯ И СОРТИРОВКА (без перезагрузки) ────
             function updateCurrentUnseenFiltered() {
                 let filtered = allArticles.slice();
 
                 if (currentView === 'favorites') {
                     filtered = filtered.filter(a => a.favorite);
                 } else {
-                    filtered = filtered.filter(a => !seenArticleIds.has(a.id));
+                    // Для "Случайно" скрываем просмотренные, для остальных — показываем все
+                    if (currentSort === 'random') {
+                        filtered = filtered.filter(a => !seenArticleIds.has(a.id));
+                    }
                 }
 
                 if (searchQuery) {
@@ -1345,20 +1313,20 @@
                 }
 
                 currentUnseenFiltered = filtered;
-                // pageIndex сбрасывается в applyFilters() при необходимости
             }
 
-            // ─── ПОЛУЧЕНИЕ СЛЕДУЮЩЕЙ ПОРЦИИ ────────────────────
             function getNextBatch(size) {
                 const batch = currentUnseenFiltered.slice(pageIndex, pageIndex + size);
                 if (batch.length === 0) return [];
-                const ids = batch.map(a => a.id);
-                markAsSeen(ids);
+                // Помечаем как просмотренные только в режиме "Случайно"
+                if (currentSort === 'random') {
+                    const ids = batch.map(a => a.id);
+                    markAsSeen(ids);
+                }
                 pageIndex += batch.length;
                 return batch;
             }
 
-            // ─── РЕНДЕР ──────────────────────────────────────────
             function createArticleHTML(article) {
                 const favClass = article.favorite ? 'favorited' : '';
                 const favIcon = article.favorite ? '★' : '☆';
@@ -1382,10 +1350,8 @@
             }
 
             function appendArticlesToDOM(articles) {
-                // Если в feed есть пустое состояние (empty-state) — удаляем его
                 const emptyEl = feedEl.querySelector('.empty-state');
                 if (emptyEl) emptyEl.remove();
-
                 const html = articles.map(createArticleHTML).join('');
                 feedEl.insertAdjacentHTML('beforeend', html);
                 loadedArticles = loadedArticles.concat(articles);
@@ -1404,7 +1370,8 @@
                 }
                 feedEl.innerHTML = `
                     <div class="empty-state">
-                        Капец, но ничего не найдено!
+                        <div class="emoji">🔥</div>
+                        Капец, ты всё прочитал!
                         <div class="sub">Новые статьи скоро появятся. Заглядывай позже!</div>
                     </div>
                 `;
@@ -1429,89 +1396,57 @@
                 countDisplay.textContent = visibleCount;
             }
 
-            // ─── ПРИМЕНЕНИЕ ФИЛЬТРОВ (с сохранением скролла) ──
-            function applyFilters() {
-                // Сохраняем позицию скролла до обновления
+            // ─── ПОЛНАЯ ПЕРЕЗАГРУЗКА ЛЕНТЫ ──────────────────────
+            function rebuildFeed() {
                 const savedScrollY = window.scrollY;
+                // Очищаем всё
+                feedEl.innerHTML = '';
+                loadedArticles = [];
+                pageIndex = 0;
+                isLoading = false;
 
-                // Обновляем список непросмотренных с учётом фильтров
                 updateCurrentUnseenFiltered();
 
-                // 1. Удаляем из DOM статьи, которые не соответствуют текущему фильтру
-                const domArticles = [...feedEl.querySelectorAll('.article')];
-                const toRemove = domArticles.filter(el => {
-                    const id = parseInt(el.dataset.id, 10);
-                    const article = allArticles.find(a => a.id === id);
-                    if (!article) return true;
-                    if (currentView === 'favorites' && !article.favorite) return true;
-                    if (selectedCategory && article.category !== selectedCategory) return true;
-                    if (searchQuery) {
-                        const q = searchQuery.toLowerCase();
-                        if (searchFilter === 'title' && !article.title.toLowerCase().includes(q)) return true;
-                        if (searchFilter === 'content' && !article.content.toLowerCase().includes(q)) return true;
-                        if (searchFilter === 'category' && !article.category.toLowerCase().includes(q)) return true;
-                    }
-                    if (currentView !== 'favorites' && seenArticleIds.has(id)) return true;
-                    return false;
-                });
-
-                toRemove.forEach(el => {
-                    const id = parseInt(el.dataset.id, 10);
-                    el.remove();
-                    loadedArticles = loadedArticles.filter(a => a.id !== id);
-                });
-
-                // 2. Добавляем новые статьи из currentUnseenFiltered, которых ещё нет в DOM
-                const loadedIds = new Set(loadedArticles.map(a => a.id));
-                const newArticles = currentUnseenFiltered.filter(a => !loadedIds.has(a.id));
-
-                let addedCount = 0;
-                if (newArticles.length > 0) {
-                    const limit = infiniteScrollEnabled ? INFINITE_STEP : PAGE_SIZE;
-                    const toAdd = newArticles.slice(0, limit);
-                    appendArticlesToDOM(toAdd);
-                    addedCount = toAdd.length;
-                }
-
-                // 3. Если в DOM нет статей — показываем сообщение, но только если нет статей для добавления
-                if (feedEl.querySelectorAll('.article').length === 0) {
-                    if (currentUnseenFiltered.length === 0 && allArticles.length > 0) {
-                        renderEmptyState();
-                    } else if (allArticles.length === 0) {
+                // Если нет статей — показываем пустое состояние
+                if (currentUnseenFiltered.length === 0) {
+                    if (allArticles.length === 0) {
                         renderEmptyState();
                     } else {
-                        // Есть статьи в currentUnseenFiltered, но они почему-то не добавились — пробуем ещё раз
-                        const retryIds = new Set(loadedArticles.map(a => a.id));
-                        const retryArticles = currentUnseenFiltered.filter(a => !retryIds.has(a.id));
-                        if (retryArticles.length > 0) {
-                            const limit = infiniteScrollEnabled ? INFINITE_STEP : PAGE_SIZE;
-                            const toAdd = retryArticles.slice(0, limit);
-                            appendArticlesToDOM(toAdd);
-                            addedCount += toAdd.length;
-                        }
-                        // Если после повторной попытки всё ещё пусто — показываем пустое состояние
-                        if (feedEl.querySelectorAll('.article').length === 0) {
-                            renderEmptyState();
-                        }
+                        // Если есть статьи, но они все просмотрены (для random) или ничего не подходит
+                        renderEmptyState();
                     }
-                } else {
-                    // Если в DOM есть статьи — убеждаемся, что пустое состояние удалено
-                    const emptyEl = feedEl.querySelector('.empty-state');
-                    if (emptyEl) emptyEl.remove();
+                    updateStats();
+                    // Восстанавливаем скролл
+                    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                    const targetScroll = Math.min(savedScrollY, maxScroll);
+                    if (targetScroll > 0) window.scrollTo(0, targetScroll);
+                    return;
                 }
 
-                // 4. Обновляем счётчик и кнопку "Загрузить ещё" (если пагинация)
+                // Загружаем первую порцию
+                const limit = infiniteScrollEnabled ? INFINITE_STEP : PAGE_SIZE;
+                const firstBatch = getNextBatch(limit);
+                if (firstBatch.length === 0) {
+                    renderEmptyState();
+                    updateStats();
+                    // Восстанавливаем скролл
+                    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                    const targetScroll = Math.min(savedScrollY, maxScroll);
+                    if (targetScroll > 0) window.scrollTo(0, targetScroll);
+                    return;
+                }
+                appendArticlesToDOM(firstBatch);
                 updateStats();
+
+                // Если пагинация — добавляем кнопку
                 if (!infiniteScrollEnabled) {
                     renderLoadMoreButton();
                 }
 
-                // 5. Восстанавливаем позицию скролла (с ограничением по высоте документа)
+                // Восстанавливаем скролл
                 const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
                 const targetScroll = Math.min(savedScrollY, maxScroll);
-                if (targetScroll > 0) {
-                    window.scrollTo(0, targetScroll);
-                }
+                if (targetScroll > 0) window.scrollTo(0, targetScroll);
             }
 
             // ─── РЕЖИМЫ: ПАГИНАЦИЯ И БЕСКОНЕЧНАЯ ЛЕНТА ────────
@@ -1549,29 +1484,9 @@
                 isLoading = false;
             }
 
-            function resetAndRenderPaginated() {
-                const savedScrollY = window.scrollY;
-                feedEl.innerHTML = '';
-                loadedArticles = [];
-                pageIndex = 0;
-                updateCurrentUnseenFiltered();
-                const firstBatch = getNextBatch(PAGE_SIZE);
-                if (firstBatch.length === 0) {
-                    renderEmptyState();
-                    updateStats();
-                    return;
-                }
-                appendArticlesToDOM(firstBatch);
-                updateStats();
-                renderLoadMoreButton();
-                // Восстанавливаем скролл, если он был
-                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                const targetScroll = Math.min(savedScrollY, maxScroll);
-                if (targetScroll > 0) window.scrollTo(0, targetScroll);
-            }
-
             function loadMoreInfinite() {
                 if (isLoading) return;
+                if (pageIndex >= currentUnseenFiltered.length) return;
                 isLoading = true;
                 const batch = getNextBatch(INFINITE_STEP);
                 if (batch.length === 0) {
@@ -1587,24 +1502,6 @@
                 isLoading = false;
             }
 
-            function startInfiniteScroll() {
-                const savedScrollY = window.scrollY;
-                feedEl.innerHTML = '';
-                loadedArticles = [];
-                pageIndex = 0;
-                updateCurrentUnseenFiltered();
-                if (currentUnseenFiltered.length === 0 && allArticles.length > 0) {
-                    renderEmptyState();
-                    updateStats();
-                    return;
-                }
-                loadMoreInfinite();
-                // Восстанавливаем скролл
-                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                const targetScroll = Math.min(savedScrollY, maxScroll);
-                if (targetScroll > 0) window.scrollTo(0, targetScroll);
-            }
-
             function onScroll() {
                 if (!infiniteScrollEnabled) return;
                 if (isLoading) return;
@@ -1617,27 +1514,18 @@
             }
 
             function applyCurrentMode() {
-                if (infiniteScrollEnabled) {
-                    startInfiniteScroll();
-                } else {
-                    resetAndRenderPaginated();
-                }
+                // При смене режима перестраиваем ленту
+                infiniteScrollEnabled = !infiniteScrollEnabled; // toggle уже сделан в switchMode
+                localStorage.setItem(LS_INFINITE_MODE, infiniteScrollEnabled ? 'true' : 'false');
+                rebuildFeed();
                 updateToggleButtonAppearance();
             }
 
             function switchMode() {
-                const savedScrollY = window.scrollY;
                 infiniteScrollEnabled = !infiniteScrollEnabled;
                 localStorage.setItem(LS_INFINITE_MODE, infiniteScrollEnabled ? 'true' : 'false');
-                feedEl.innerHTML = '';
-                loadedArticles = [];
-                pageIndex = 0;
-                updateCurrentUnseenFiltered();
-                applyCurrentMode();
-                // Восстанавливаем скролл после смены режима
-                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                const targetScroll = Math.min(savedScrollY, maxScroll);
-                if (targetScroll > 0) window.scrollTo(0, targetScroll);
+                rebuildFeed();
+                updateToggleButtonAppearance();
             }
 
             function updateToggleButtonAppearance() {
@@ -1651,7 +1539,7 @@
                 infiniteToggleBtn.classList.add('visible');
             }
 
-            // ─── ТЕМА ────────────────────────────────────────────
+            // ─── ТЕМА, ЗУМ, ШАПКА ──────────────────────────────
             function setTheme(theme) {
                 if (theme === 'dark') document.documentElement.classList.add('dark-theme');
                 else document.documentElement.classList.remove('dark-theme');
@@ -1663,26 +1551,17 @@
                 setTheme(isDark ? 'light' : 'dark');
             }
 
-            // ─── ЗУМ ────────────────────────────────────────────
             let currentZoom = 1;
-
             function applyZoom() {
                 const base = 16;
                 const size = Math.min(Math.max(base * currentZoom, 12), 24);
                 document.documentElement.style.fontSize = size + 'px';
                 localStorage.setItem(LS_ZOOM, String(currentZoom));
             }
+            function zoomInHandler() { currentZoom = Math.min(currentZoom + 0.08, 1.5); applyZoom(); }
+            function zoomOutHandler() { currentZoom = Math.max(currentZoom - 0.08, 0.7); applyZoom(); }
+            function zoomResetHandler() { currentZoom = 1; applyZoom(); }
 
-            function zoomInHandler() { currentZoom = Math.min(currentZoom + 0.08, 1.5);
-                applyZoom(); }
-
-            function zoomOutHandler() { currentZoom = Math.max(currentZoom - 0.08, 0.7);
-                applyZoom(); }
-
-            function zoomResetHandler() { currentZoom = 1;
-                applyZoom(); }
-
-            // ─── УПРАВЛЕНИЕ ШАПКОЙ ──────────────────────────────
             function setHeaderState(hidden) {
                 localStorage.setItem(LS_HEADER_HIDDEN, hidden ? 'true' : 'false');
                 if (hidden) {
@@ -1694,7 +1573,6 @@
                 }
             }
 
-            // ─── МОДАЛЬНОЕ ОКНО ─────────────────────────────────
             function showModalIfNeeded() {
                 if (localStorage.getItem(LS_MODAL_SHOWN) !== 'true') {
                     modal.classList.add('active');
@@ -1708,30 +1586,24 @@
 
             // ─── ПОДПИСКА НА СОБЫТИЯ ────────────────────────────
             function bindEvents() {
-                searchInput.addEventListener('input', (e) => {
-                    const prevQuery = searchQuery;
-                    searchQuery = e.target.value;
+                searchInput.addEventListener('input', () => {
+                    searchQuery = searchInput.value;
                     clearBtn.classList.toggle('visible', searchQuery.length > 0);
-                    // Если поиск был очищен — применяем фильтры, иначе тоже применяем
-                    applyFilters();
+                    rebuildFeed();
                 });
 
                 clearBtn.addEventListener('click', () => {
                     searchInput.value = '';
                     searchQuery = '';
                     clearBtn.classList.remove('visible');
-                    applyFilters();
+                    rebuildFeed();
                     searchInput.focus();
                 });
 
-                searchFilterEl.addEventListener('change', (e) => { searchFilter = e.target.value;
-                    applyFilters(); });
-                sortSelect.addEventListener('change', (e) => { currentSort = e.target.value;
-                    applyFilters(); });
-                categoryFilterEl.addEventListener('change', (e) => { selectedCategory = e.target.value;
-                    applyFilters(); });
-                viewFilter.addEventListener('change', (e) => { currentView = e.target.value;
-                    applyFilters(); });
+                searchFilterEl.addEventListener('change', (e) => { searchFilter = e.target.value; rebuildFeed(); });
+                sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; rebuildFeed(); });
+                categoryFilterEl.addEventListener('change', (e) => { selectedCategory = e.target.value; rebuildFeed(); });
+                viewFilter.addEventListener('change', (e) => { currentView = e.target.value; rebuildFeed(); });
 
                 feedEl.addEventListener('click', (e) => {
                     const btn = e.target.closest('.favorite-btn');
@@ -1783,8 +1655,7 @@
                 if (savedTheme === 'dark') document.documentElement.classList.add('dark-theme');
 
                 const savedZoom = localStorage.getItem(LS_ZOOM);
-                if (savedZoom) { currentZoom = parseFloat(savedZoom) || 1;
-                    applyZoom(); }
+                if (savedZoom) { currentZoom = parseFloat(savedZoom) || 1; applyZoom(); }
 
                 const savedHeaderHidden = localStorage.getItem(LS_HEADER_HIDDEN) === 'true';
                 setHeaderState(savedHeaderHidden);
@@ -1798,7 +1669,7 @@
 
                 await initArticles();
                 bindEvents();
-                applyCurrentMode();
+                // rebuildFeed уже вызван в initArticles
                 showModalIfNeeded();
 
                 scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
