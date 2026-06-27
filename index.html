@@ -133,10 +133,9 @@
             white-space: nowrap;
         }
 
-        /* "scroll" — жирный, "txt" — тонкий */
         .logo span {
             color: var(--text-secondary);
-            font-weight: 300; /* делаем тонким */
+            font-weight: 300;
         }
 
         .logo-img {
@@ -1183,14 +1182,20 @@
                         console.warn('data.json не содержит ARTICLES, будет пустой список');
                         return [];
                     }
-                    return rawArticles.map(item => ({
-                        id: item.id || 0,
-                        title: item.title || 'Без названия',
-                        content: (item.article || '').length > 260 ? item.article.slice(0, 260) + '…' : (item.article || ''),
-                        category: item.section || 'Разное',
-                        source: item.source || 'Источник: scrolltxt',
-                        favorite: false
-                    }));
+                    return rawArticles.map(item => {
+                        // Берём текст сначала из article, потом из content, иначе пустая строка
+                        let rawContent = item.article || item.content || '';
+                        // Обрезаем до 260 символов
+                        const content = rawContent.length > 260 ? rawContent.slice(0, 260) + '…' : rawContent;
+                        return {
+                            id: item.id || 0,
+                            title: item.title || 'Без названия',
+                            content: content,
+                            category: item.section || 'Разное',
+                            source: item.source || 'Источник: scrolltxt',
+                            favorite: false
+                        };
+                    });
                 } catch (e) {
                     console.error('Ошибка загрузки data.json:', e);
                     return [];
@@ -1289,7 +1294,6 @@
                 if (currentView === 'favorites') {
                     filtered = filtered.filter(a => a.favorite);
                 } else {
-                    // Для "Случайно" скрываем просмотренные, для остальных — показываем все
                     if (currentSort === 'random') {
                         filtered = filtered.filter(a => !seenArticleIds.has(a.id));
                     }
@@ -1323,7 +1327,6 @@
             function getNextBatch(size) {
                 const batch = currentUnseenFiltered.slice(pageIndex, pageIndex + size);
                 if (batch.length === 0) return [];
-                // Помечаем как просмотренные только в режиме "Случайно"
                 if (currentSort === 'random') {
                     const ids = batch.map(a => a.id);
                     markAsSeen(ids);
@@ -1394,15 +1397,14 @@
                 }
             }
 
+            // Обновляем счётчик – теперь всегда общее количество статей
             function updateStats() {
-                const visibleCount = feedEl.querySelectorAll('.article').length;
-                countDisplay.textContent = visibleCount;
+                countDisplay.textContent = allArticles.length;
             }
 
             // ─── ПОЛНАЯ ПЕРЕЗАГРУЗКА ЛЕНТЫ ──────────────────────
             function rebuildFeed() {
                 const savedScrollY = window.scrollY;
-                // Очищаем всё
                 feedEl.innerHTML = '';
                 loadedArticles = [];
                 pageIndex = 0;
@@ -1410,23 +1412,19 @@
 
                 updateCurrentUnseenFiltered();
 
-                // Если нет статей — показываем пустое состояние
                 if (currentUnseenFiltered.length === 0) {
                     if (allArticles.length === 0) {
                         renderEmptyState();
                     } else {
-                        // Если есть статьи, но они все просмотрены (для random) или ничего не подходит
                         renderEmptyState();
                     }
                     updateStats();
-                    // Восстанавливаем скролл
                     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
                     const targetScroll = Math.min(savedScrollY, maxScroll);
                     if (targetScroll > 0) window.scrollTo(0, targetScroll);
                     return;
                 }
 
-                // Загружаем первую порцию
                 const limit = infiniteScrollEnabled ? INFINITE_STEP : PAGE_SIZE;
                 const firstBatch = getNextBatch(limit);
                 if (firstBatch.length === 0) {
@@ -1440,12 +1438,10 @@
                 appendArticlesToDOM(firstBatch);
                 updateStats();
 
-                // Если пагинация — добавляем кнопку
                 if (!infiniteScrollEnabled) {
                     renderLoadMoreButton();
                 }
 
-                // Восстанавливаем скролл
                 const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
                 const targetScroll = Math.min(savedScrollY, maxScroll);
                 if (targetScroll > 0) window.scrollTo(0, targetScroll);
@@ -1516,8 +1512,7 @@
             }
 
             function applyCurrentMode() {
-                // При смене режима перестраиваем ленту
-                infiniteScrollEnabled = !infiniteScrollEnabled; // toggle уже сделан в switchMode
+                infiniteScrollEnabled = !infiniteScrollEnabled;
                 localStorage.setItem(LS_INFINITE_MODE, infiniteScrollEnabled ? 'true' : 'false');
                 rebuildFeed();
                 updateToggleButtonAppearance();
