@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
     <title>scrolltxt · умный фид</title>
-    <!-- Favicon -->
     <link rel="icon" href="logo.png" type="image/png" />
     <style>
         /* ─── RESET & BASE ─── */
@@ -12,6 +11,16 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        /* Скрываем скроллбар во всех браузерах */
+        html {
+            scrollbar-width: none;        /* Firefox */
+            -ms-overflow-style: none;     /* IE / старый Edge */
+        }
+        ::-webkit-scrollbar {
+            width: 0;
+            height: 0;
         }
 
         :root {
@@ -77,6 +86,7 @@
             flex-direction: column;
             transition: background 0.3s, color 0.3s;
             overflow-x: hidden;
+            overflow-y: scroll;
         }
 
         .app {
@@ -631,7 +641,7 @@
             right: 1.75rem;
         }
 
-        .infinite-toggle-btn {
+        .size-toggle-btn {
             bottom: 1.75rem;
             left: 50%;
             transform: translateX(-50%);
@@ -651,17 +661,17 @@
             font-family: var(--font);
         }
 
-        .infinite-toggle-btn.visible {
+        .size-toggle-btn.visible {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .infinite-toggle-btn:hover {
+        .size-toggle-btn:hover {
             transform: translateX(-50%) scale(1.05);
             background: var(--bg-hover);
         }
 
-        .infinite-toggle-btn:active {
+        .size-toggle-btn:active {
             transform: translateX(-50%) scale(0.92);
         }
 
@@ -761,6 +771,44 @@
             color: var(--text-secondary);
             line-height: 1.7;
             font-size: 1rem;
+        }
+
+        .modal-box .size-options {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .size-option-btn {
+            padding: 0.6rem 1.8rem;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--bg-input);
+            font-family: var(--font);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s, border-color 0.2s;
+            min-width: 4rem;
+        }
+
+        .size-option-btn:hover {
+            background: var(--bg-hover);
+            transform: scale(1.05);
+            border-color: var(--text);
+        }
+
+        .size-option-btn:active {
+            transform: scale(0.95);
+        }
+
+        .size-option-btn.active {
+            background: var(--text);
+            color: var(--bg);
+            border-color: var(--text);
         }
 
         .modal-btn {
@@ -883,7 +931,7 @@
                 bottom: 1.25rem;
                 left: 1.25rem;
             }
-            .infinite-toggle-btn {
+            .size-toggle-btn {
                 bottom: 1.25rem;
                 height: 2.8rem;
                 padding: 0 1rem;
@@ -976,7 +1024,7 @@
                 bottom: 1rem;
                 left: 1rem;
             }
-            .infinite-toggle-btn {
+            .size-toggle-btn {
                 bottom: 1rem;
                 height: 2.4rem;
                 padding: 0 0.8rem;
@@ -1003,21 +1051,6 @@
                 width: 1.2rem;
                 height: 1.2rem;
             }
-        }
-
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--text-light);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
         }
     </style>
 </head>
@@ -1101,9 +1134,24 @@
     </div>
 
     <button class="float-btn scroll-top-btn" id="scrollTopBtn" aria-label="Вверх">▲</button>
-    <button class="float-btn infinite-toggle-btn" id="infiniteToggleBtn" aria-label="Режим ленты">Беск</button>
+    <button class="float-btn size-toggle-btn" id="sizeToggleBtn" aria-label="Выбрать размер страницы">Размер</button>
     <button class="float-btn header-show-btn" id="headerShowBtn" aria-label="Показать шапку">▲</button>
 
+    <!-- Модальное окно выбора размера -->
+    <div class="modal-overlay" id="sizeModal">
+        <div class="modal-box">
+            <button class="modal-close" id="sizeModalClose" aria-label="Закрыть">×</button>
+            <h2>Количество статей на страницу</h2>
+            <p>Выберите, сколько статей показывать за один раз.</p>
+            <div class="size-options">
+                <button class="size-option-btn" data-size="10">10</button>
+                <button class="size-option-btn" data-size="50">50</button>
+                <button class="size-option-btn" data-size="100">100</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно приветствия -->
     <div class="modal-overlay" id="rulesModal">
         <div class="modal-box">
             <button class="modal-close" id="modalCloseBtn" aria-label="Закрыть">×</button>
@@ -1116,17 +1164,14 @@
     <script>
         (function() {
             const API_URL = './data.json';
-            const INFINITE_STEP = 20;
-            const PAGE_SIZE = 50;
-            const MAX_DOM_ARTICLES = 100;
+            const LS_PAGE_SIZE = 'scrolltxt-page-size';
 
             let allArticles = [];
             let seenArticleIds = new Set();
-            let loadedArticles = [];
             let currentUnseenFiltered = [];
             let pageIndex = 0;
             let isLoading = false;
-            let infiniteScrollEnabled = true;
+            let pageSize = 10;
 
             let searchQuery = '';
             let searchFilter = 'title';
@@ -1140,7 +1185,6 @@
             const LS_ZOOM = 'scrolltxt-zoom';
             const LS_HEADER_HIDDEN = 'scrolltxt-header-hidden';
             const LS_MODAL_SHOWN = 'scrolltxt-modal-shown';
-            const LS_INFINITE_MODE = 'scrolltxt-infinite-mode';
 
             const feedEl = document.getElementById('feed');
             const countDisplay = document.getElementById('countDisplay');
@@ -1154,7 +1198,10 @@
             const headerToggle = document.getElementById('headerToggle');
             const headerShowBtn = document.getElementById('headerShowBtn');
             const scrollTopBtn = document.getElementById('scrollTopBtn');
-            const infiniteToggleBtn = document.getElementById('infiniteToggleBtn');
+            const sizeToggleBtn = document.getElementById('sizeToggleBtn');
+            const sizeModal = document.getElementById('sizeModal');
+            const sizeModalClose = document.getElementById('sizeModalClose');
+            const sizeOptions = document.querySelectorAll('.size-option-btn');
             const zoomOut = document.getElementById('zoomOut');
             const zoomIn = document.getElementById('zoomIn');
             const zoomReset = document.getElementById('zoomReset');
@@ -1183,10 +1230,7 @@
                         return [];
                     }
                     return rawArticles.map(item => {
-                        // Берём текст сначала из article, потом из content, иначе пустая строка
-                        let rawContent = item.article || item.content || '';
-                        // Обрезаем до 260 символов
-                        const content = rawContent.length > 260 ? rawContent.slice(0, 260) + '…' : rawContent;
+                        const content = item.article || item.content || '';
                         return {
                             id: item.id || 0,
                             title: item.title || 'Без названия',
@@ -1207,6 +1251,7 @@
                 updateCategoryFilter();
                 loadSeenArticles();
                 loadFavorites();
+                loadPageSize();
                 rebuildFeed();
             }
 
@@ -1269,13 +1314,7 @@
                         btn.childNodes[2].textContent = fav ? 'В избранном' : 'В избранное';
                     });
                     if (currentView === 'favorites' && !article.favorite) {
-                        const el = document.querySelector(`.article[data-id="${id}"]`);
-                        if (el) el.remove();
-                        loadedArticles = loadedArticles.filter(a => a.id !== id);
-                        updateStats();
-                        if (loadedArticles.length === 0) {
-                            renderEmptyState();
-                        }
+                        rebuildFeed();
                     }
                 }
             }
@@ -1288,13 +1327,68 @@
                 }
             }
 
+            // ─── Управление размером страницы ──────────────────
+            function loadPageSize() {
+                const saved = localStorage.getItem(LS_PAGE_SIZE);
+                if (saved) {
+                    const val = parseInt(saved, 10);
+                    if ([10, 50, 100].includes(val)) {
+                        pageSize = val;
+                    }
+                }
+                updateSizeButtonLabel();
+                highlightActiveSize();
+            }
+
+            function savePageSize() {
+                localStorage.setItem(LS_PAGE_SIZE, String(pageSize));
+                updateSizeButtonLabel();
+                highlightActiveSize();
+            }
+
+            function setPageSize(newSize) {
+                if (newSize === pageSize) {
+                    closeSizeModal();
+                    return;
+                }
+                pageSize = newSize;
+                savePageSize();
+                closeSizeModal();
+                rebuildFeed();
+            }
+
+            function updateSizeButtonLabel() {
+                sizeToggleBtn.textContent = pageSize;
+                sizeToggleBtn.title = `Показывать по ${pageSize} статей`;
+                sizeToggleBtn.classList.add('visible');
+            }
+
+            function highlightActiveSize() {
+                sizeOptions.forEach(btn => {
+                    const val = parseInt(btn.dataset.size, 10);
+                    btn.classList.toggle('active', val === pageSize);
+                });
+            }
+
+            // ─── Модалка размера ──────────────────────────────
+            function openSizeModal() {
+                sizeModal.classList.add('active');
+                highlightActiveSize();
+            }
+
+            function closeSizeModal() {
+                sizeModal.classList.remove('active');
+            }
+
+            // ─── Фильтрация и пагинация ──────────────────────
             function updateCurrentUnseenFiltered() {
                 let filtered = allArticles.slice();
 
                 if (currentView === 'favorites') {
                     filtered = filtered.filter(a => a.favorite);
                 } else {
-                    if (currentSort === 'random') {
+                    // В ленте: исключаем просмотренные, только если нет поискового запроса
+                    if (!searchQuery) {
                         filtered = filtered.filter(a => !seenArticleIds.has(a.id));
                     }
                 }
@@ -1327,10 +1421,9 @@
             function getNextBatch(size) {
                 const batch = currentUnseenFiltered.slice(pageIndex, pageIndex + size);
                 if (batch.length === 0) return [];
-                if (currentSort === 'random') {
-                    const ids = batch.map(a => a.id);
-                    markAsSeen(ids);
-                }
+                // Всегда отмечаем как просмотренные
+                const ids = batch.map(a => a.id);
+                markAsSeen(ids);
                 pageIndex += batch.length;
                 return batch;
             }
@@ -1357,183 +1450,87 @@
                 `;
             }
 
-            function appendArticlesToDOM(articles) {
-                const emptyEl = feedEl.querySelector('.empty-state');
-                if (emptyEl) emptyEl.remove();
-                const html = articles.map(createArticleHTML).join('');
-                feedEl.insertAdjacentHTML('beforeend', html);
-                loadedArticles = loadedArticles.concat(articles);
-            }
-
-            function renderEmptyState() {
-                if (allArticles.length === 0) {
-                    feedEl.innerHTML = `
-                        <div class="empty-state">
-                            Ничего не найдено
-                            <div class="sub">Попробуйте изменить фильтры или проверьте подключение к интернету.</div>
-                        </div>
-                    `;
+            function renderArticles(articles) {
+                feedEl.innerHTML = '';
+                if (articles.length === 0) {
+                    if (allArticles.length === 0) {
+                        feedEl.innerHTML = `
+                            <div class="empty-state">
+                                Ничего не найдено
+                                <div class="sub">Попробуйте изменить фильтры или проверьте подключение к интернету.</div>
+                            </div>
+                        `;
+                    } else {
+                        feedEl.innerHTML = `
+                            <div class="empty-state">
+                                Капец, ты всё прочитал!
+                                <div class="sub">Новые статьи скоро появятся. Заглядывай позже!</div>
+                            </div>
+                        `;
+                    }
                     return;
                 }
-                feedEl.innerHTML = `
-                    <div class="empty-state">
-                        Капец, ты всё прочитал!
-                        <div class="sub">Новые статьи скоро появятся. Заглядывай позже!</div>
-                    </div>
-                `;
+                const html = articles.map(createArticleHTML).join('');
+                feedEl.insertAdjacentHTML('beforeend', html);
             }
 
-            function removeExtraTopArticles() {
-                if (!infiniteScrollEnabled) return;
-                const articles = [...feedEl.querySelectorAll('.article')];
-                while (articles.length > MAX_DOM_ARTICLES) {
-                    const first = articles.shift();
-                    if (!first) break;
-                    const oldScroll = window.scrollY;
-                    first.remove();
-                    const id = parseInt(first.dataset.id, 10);
-                    loadedArticles = loadedArticles.filter(a => a.id !== id);
-                    window.scrollTo(0, oldScroll);
+            function loadNextPage() {
+                if (isLoading) return;
+                if (pageIndex >= currentUnseenFiltered.length) {
+                    renderLoadMoreButton();
+                    return;
                 }
+                isLoading = true;
+                const batch = getNextBatch(pageSize);
+                if (batch.length === 0) {
+                    isLoading = false;
+                    renderLoadMoreButton();
+                    return;
+                }
+                renderArticles(batch);
+                renderLoadMoreButton();
+                isLoading = false;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
-            // Обновляем счётчик – теперь всегда общее количество статей
+            function loadMorePaginated() {
+                loadNextPage();
+            }
+
+            function rebuildFeed() {
+                pageIndex = 0;
+                isLoading = false;
+                updateCurrentUnseenFiltered();
+
+                if (currentUnseenFiltered.length === 0) {
+                    renderArticles([]);
+                    updateStats();
+                    renderLoadMoreButton();
+                    return;
+                }
+
+                const batch = getNextBatch(pageSize);
+                renderArticles(batch);
+                updateStats();
+                renderLoadMoreButton();
+            }
+
             function updateStats() {
                 countDisplay.textContent = allArticles.length;
             }
 
-            // ─── ПОЛНАЯ ПЕРЕЗАГРУЗКА ЛЕНТЫ ──────────────────────
-            function rebuildFeed() {
-                const savedScrollY = window.scrollY;
-                feedEl.innerHTML = '';
-                loadedArticles = [];
-                pageIndex = 0;
-                isLoading = false;
-
-                updateCurrentUnseenFiltered();
-
-                if (currentUnseenFiltered.length === 0) {
-                    if (allArticles.length === 0) {
-                        renderEmptyState();
-                    } else {
-                        renderEmptyState();
-                    }
-                    updateStats();
-                    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                    const targetScroll = Math.min(savedScrollY, maxScroll);
-                    if (targetScroll > 0) window.scrollTo(0, targetScroll);
-                    return;
-                }
-
-                const limit = infiniteScrollEnabled ? INFINITE_STEP : PAGE_SIZE;
-                const firstBatch = getNextBatch(limit);
-                if (firstBatch.length === 0) {
-                    renderEmptyState();
-                    updateStats();
-                    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                    const targetScroll = Math.min(savedScrollY, maxScroll);
-                    if (targetScroll > 0) window.scrollTo(0, targetScroll);
-                    return;
-                }
-                appendArticlesToDOM(firstBatch);
-                updateStats();
-
-                if (!infiniteScrollEnabled) {
-                    renderLoadMoreButton();
-                }
-
-                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                const targetScroll = Math.min(savedScrollY, maxScroll);
-                if (targetScroll > 0) window.scrollTo(0, targetScroll);
-            }
-
-            // ─── РЕЖИМЫ: ПАГИНАЦИЯ И БЕСКОНЕЧНАЯ ЛЕНТА ────────
             function renderLoadMoreButton() {
                 const existing = document.getElementById('loadMoreContainer');
                 if (existing) existing.remove();
 
-                if (pageIndex >= currentUnseenFiltered.length || currentUnseenFiltered.length === 0) {
-                    if (allArticles.length > 0 && loadedArticles.length === 0) {
-                        renderEmptyState();
-                    }
-                    return;
-                }
+                if (pageIndex >= currentUnseenFiltered.length) return;
 
                 const container = document.createElement('div');
                 container.id = 'loadMoreContainer';
                 container.className = 'load-more-wrap';
-                container.innerHTML = '<button class="load-more-btn" id="loadMoreBtn">Загрузить ещё 50</button>';
+                container.innerHTML = `<button class="load-more-btn" id="loadMoreBtn">Загрузить ещё ${pageSize}</button>`;
                 feedEl.appendChild(container);
                 document.getElementById('loadMoreBtn').addEventListener('click', loadMorePaginated);
-            }
-
-            function loadMorePaginated() {
-                if (isLoading) return;
-                isLoading = true;
-                const batch = getNextBatch(PAGE_SIZE);
-                if (batch.length === 0) {
-                    isLoading = false;
-                    renderLoadMoreButton();
-                    return;
-                }
-                appendArticlesToDOM(batch);
-                updateStats();
-                renderLoadMoreButton();
-                isLoading = false;
-            }
-
-            function loadMoreInfinite() {
-                if (isLoading) return;
-                if (pageIndex >= currentUnseenFiltered.length) return;
-                isLoading = true;
-                const batch = getNextBatch(INFINITE_STEP);
-                if (batch.length === 0) {
-                    isLoading = false;
-                    if (feedEl.querySelectorAll('.article').length === 0 && allArticles.length > 0) {
-                        renderEmptyState();
-                    }
-                    return;
-                }
-                appendArticlesToDOM(batch);
-                removeExtraTopArticles();
-                updateStats();
-                isLoading = false;
-            }
-
-            function onScroll() {
-                if (!infiniteScrollEnabled) return;
-                if (isLoading) return;
-                if (pageIndex >= currentUnseenFiltered.length) return;
-                const scrollBottom = window.innerHeight + window.scrollY;
-                const docBottom = document.documentElement.offsetHeight;
-                if (docBottom - scrollBottom < 800) {
-                    loadMoreInfinite();
-                }
-            }
-
-            function applyCurrentMode() {
-                infiniteScrollEnabled = !infiniteScrollEnabled;
-                localStorage.setItem(LS_INFINITE_MODE, infiniteScrollEnabled ? 'true' : 'false');
-                rebuildFeed();
-                updateToggleButtonAppearance();
-            }
-
-            function switchMode() {
-                infiniteScrollEnabled = !infiniteScrollEnabled;
-                localStorage.setItem(LS_INFINITE_MODE, infiniteScrollEnabled ? 'true' : 'false');
-                rebuildFeed();
-                updateToggleButtonAppearance();
-            }
-
-            function updateToggleButtonAppearance() {
-                if (infiniteScrollEnabled) {
-                    infiniteToggleBtn.textContent = 'Беск';
-                    infiniteToggleBtn.title = 'Бесконечная лента';
-                } else {
-                    infiniteToggleBtn.textContent = '50';
-                    infiniteToggleBtn.title = 'По 50 статей';
-                }
-                infiniteToggleBtn.classList.add('visible');
             }
 
             // ─── ТЕМА, ЗУМ, ШАПКА ──────────────────────────────
@@ -1618,14 +1615,25 @@
                 });
                 headerShowBtn.addEventListener('click', () => setHeaderState(false));
                 scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-                infiniteToggleBtn.addEventListener('click', switchMode);
+
+                sizeToggleBtn.addEventListener('click', openSizeModal);
+                sizeModalClose.addEventListener('click', closeSizeModal);
+                sizeModal.addEventListener('click', (e) => {
+                    if (e.target === sizeModal) closeSizeModal();
+                });
+                sizeOptions.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const size = parseInt(btn.dataset.size, 10);
+                        setPageSize(size);
+                    });
+                });
+
                 zoomIn.addEventListener('click', zoomInHandler);
                 zoomOut.addEventListener('click', zoomOutHandler);
                 zoomReset.addEventListener('click', zoomResetHandler);
 
                 window.addEventListener('scroll', () => {
                     scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
-                    onScroll();
                 });
 
                 understoodBtn.addEventListener('click', closeModal);
@@ -1637,6 +1645,7 @@
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape') {
                         if (modal.classList.contains('active')) closeModal();
+                        if (sizeModal.classList.contains('active')) closeSizeModal();
                         if (document.activeElement === searchInput) searchInput.blur();
                     }
                     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -1657,10 +1666,6 @@
                 const savedHeaderHidden = localStorage.getItem(LS_HEADER_HIDDEN) === 'true';
                 setHeaderState(savedHeaderHidden);
 
-                const savedInfinite = localStorage.getItem(LS_INFINITE_MODE);
-                if (savedInfinite === 'false') infiniteScrollEnabled = false;
-                updateToggleButtonAppearance();
-
                 sortSelect.value = 'random';
                 currentSort = 'random';
 
@@ -1669,7 +1674,7 @@
                 showModalIfNeeded();
 
                 scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
-                console.log('✅ scrolltxt — данные загружены, фильтры работают без перезагрузки');
+                console.log('✅ scrolltxt — статья не повторяется, поиск находит всё');
             }
 
             init();
